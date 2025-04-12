@@ -2,22 +2,38 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone') {
+        stage('Cloner le code') {
             steps {
-                echo 'Code cloné automatiquement par Jenkins'
+                git 'https://github.com/ghada634/testprojet.git'
             }
         }
 
-        stage('Test') {
+        stage('Installer Composer') {
             steps {
-                echo 'Pas de tests pour l’instant'
+                sh '''
+                php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+                php composer-setup.php
+                php composer.phar install
+                '''
+            }
+        }
+
+        stage('Installer PHPUnit') {
+            steps {
+                sh 'php composer.phar require --dev phpunit/phpunit ^9'
+            }
+        }
+
+        stage('Tests') {
+            steps {
+                sh './vendor/bin/phpunit tests'
             }
         }
 
         stage('Déploiement') {
             steps {
-                echo 'Déploiement local simulé'
-                // Exemple : sh 'cp -r * /var/www/html/edoc/'
+                echo 'Déployer le projet...'
+                // ici tu peux mettre un script SCP, FTP ou Git push vers un serveur
             }
         }
     }
