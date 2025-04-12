@@ -3,7 +3,7 @@
     "description": "Projet PHP avec CI/CD, tests et déploiement",
     "type": "project",
     "require-dev": {
-      "phpunit/phpunit": "^10.0"
+      "phpunit/phpunit": "^9.5"
     },
     "autoload": {
       "psr-4": {
