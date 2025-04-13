@@ -1,1 +1,1 @@
-{"version":1,"defects":[],"times":{"SimpleTest::testTrue":0.01}}
+{"version":1,"defects":{"ConnectionTest::testDatabaseConnection":4,"ConnectionTest::testQuery":3},"times":{"SimpleTest::testTrue":0.001,"ConnectionTest::testDatabaseConnection":0.041,"ConnectionTest::testQuery":0.004}}
