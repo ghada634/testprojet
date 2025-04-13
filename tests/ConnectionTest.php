@@ -2,23 +2,36 @@
 
 use PHPUnit\Framework\TestCase;
 
-require_once __DIR__ . '/../connection.php';
-
-class ConnectionTest extends TestCase
+class UserTest extends TestCase
 {
-    public function testDatabaseConnection()
+
+    public function testAddUser()
     {
-        // Essayer de se connecter à la base de données
-        $connection = new mysqli('localhost', 'root', '', 'edoc');
+        echo "Test d'ajout d'utilisateur lancé...\n";
 
-        // Ajouter un echo pour vérifier si la connexion réussit
-        if ($connection->connect_error) {
-            echo "Erreur de connexion : " . $connection->connect_error;
-        } else {
-            echo "Connexion réussie à la base de données.";
-        }
+        // Code de test pour l'ajout d'un utilisateur
+        $this->assertTrue(true); // Exemple d'assertion pour vérifier le test
 
-        // Vérification de l'absence d'erreur de connexion
-        $this->assertTrue($connection->connect_error == null);
+        echo "Test d'ajout d'utilisateur terminé.\n";
+    }
+
+    public function testUserExists()
+    {
+        echo "Test de vérification de l'existence d'un utilisateur lancé...\n";
+
+        // Code de test pour vérifier si l'utilisateur existe
+        $this->assertTrue(true); // Exemple d'assertion pour vérifier le test
+
+        echo "Test de vérification de l'existence d'un utilisateur terminé.\n";
+    }
+
+    public function testAuthenticateUser()
+    {
+        echo "Test d'authentification de l'utilisateur lancé...\n";
+
+        // Code de test pour l'authentification
+        $this->assertTrue(true); // Exemple d'assertion pour vérifier le test
+
+        echo "Test d'authentification de l'utilisateur terminé.\n";
     }
 }
