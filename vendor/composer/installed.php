@@ -3,7 +3,7 @@
         'name' => 'ghada/testprojet',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '8ad3b02c12a952ffa37738d08eb62cf516b6c0f9',
+        'reference' => '6eaecf1d1c2cfa660209eac84436132649de96d0',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'ghada/testprojet' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '8ad3b02c12a952ffa37738d08eb62cf516b6c0f9',
+            'reference' => '6eaecf1d1c2cfa660209eac84436132649de96d0',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

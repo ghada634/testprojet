@@ -18,9 +18,8 @@ pipeline {
 
         stage('Tests') {
             steps {
-                bat 'if not exist tests mkdir tests'
-                bat 'echo Dummy tests > tests\\dummy.txt'
-                bat 'echo Tests passés avec succès!'
+                // Exécution réelle des tests avec PHPUnit
+                bat 'php vendor\\bin\\phpunit tests'
             }
         }
 
