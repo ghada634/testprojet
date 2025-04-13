@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-require_once __DIR__ . '/../User.php'; // 🔥 très important
+require_once __DIR__ . '/../User.php';
 
 class UserTest extends TestCase
 {
