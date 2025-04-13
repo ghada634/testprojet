@@ -1,33 +1,80 @@
 pipeline {
     agent any
 
+    environment {
+        // Configuration spécifique pour votre machine
+        PHP = '"C:\\xampp\\php\\php.exe"'  // Chemin PHP XAMPP par défaut
+        COMPOSER = '"C:\Users\Mahran\test\composer.phar"'  // Utilise le Composer installé globalement
+        LOCAL_REPO_DIR = 'C:\\Users\\Mahran\\test'  // Votre répertoire local
+        DEPLOY_DIR = 'C:\\xampp\\htdocs\\eDoc'  // Répertoire de déploiement
+    }
+
     stages {
-        stage('Cloner le code') {
+        // Étape 1: Récupération du code
+        stage('Checkout Code') {
             steps {
-                git 'https://github.com/ghada634/testprojet.git'
+                git branch: 'master', 
+                url: 'https://github.com/ghada634/testprojet.git'
+                
+                // Sauvegarde dans votre répertoire local
+                bat """
+                    if not exist "${LOCAL_REPO_DIR}" mkdir "${LOCAL_REPO_DIR}"
+                    xcopy /Y /E /I . "${LOCAL_REPO_DIR}"
+                """
             }
         }
 
-        stage('Installer Composer') {
+        // Étape 2: Installation des dépendances
+        stage('Install Dependencies') {
             steps {
-                bat 'php -r "copy(\'https://getcomposer.org/installer\', \'composer-setup.php\');"'
-                bat 'php composer-setup.php'
-                bat 'php composer.phar install'
+                dir("${LOCAL_REPO_DIR}") {
+                    bat """
+                        ${COMPOSER} install --no-dev --optimize-autoloader
+                        ${COMPOSER} dump-autoload --optimize
+                    """
+                }
             }
         }
 
-        stage('Tests') {
+        // Étape 3: Exécution des tests
+        stage('Run Tests') {
             steps {
-                bat 'if not exist tests mkdir tests'
-                bat 'echo Dummy tests > tests\\dummy.txt'
-                bat 'echo Tests passés avec succès!'
+                dir("${LOCAL_REPO_DIR}") {
+                    bat """
+                        ${PHP} vendor\\bin\\phpunit --log-junit test-results.xml tests/
+                    """
+                }
+            }
+            post {
+                always {
+                    junit "${LOCAL_REPO_DIR}\\test-results.xml"
+                }
             }
         }
 
-        stage('Déploiement') {
+        // Étape 4: Déploiement
+        stage('Deploy') {
             steps {
-                bat 'echo Déploiement simulé avec succès!'
+                bat """
+                    net stop Apache2.4 || echo "Apache non démarré"
+                    robocopy "${LOCAL_REPO_DIR}" "${DEPLOY_DIR}" /MIR /NP /NFL /NDL /XD vendor tests /XF phpunit.xml .env
+                    net start Apache2.4
+                """
+                echo '🚀 Application déployée avec succès!'
             }
+        }
+    }
+
+    post {
+        failure {
+            emailext (
+                subject: '❌ Échec du déploiement eDoc',
+                body: "Build ${BUILD_NUMBER} a échoué. Voir: ${BUILD_URL}",
+                to: 'votre-email@domaine.com'
+            )
+        }
+        always {
+            cleanWs()
         }
     }
 }
