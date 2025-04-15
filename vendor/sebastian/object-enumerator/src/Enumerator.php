@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/object-enumerator.
  *
@@ -13,6 +16,7 @@ use function array_merge;
 use function func_get_args;
 use function is_array;
 use function is_object;
+
 use SebastianBergmann\ObjectReflector\ObjectReflector;
 use SebastianBergmann\RecursionContext\Context;
 
@@ -33,17 +37,17 @@ class Enumerator
     public function enumerate($variable)
     {
         if (!is_array($variable) && !is_object($variable)) {
-            throw new InvalidArgumentException;
+            throw new InvalidArgumentException();
         }
 
         if (isset(func_get_args()[1])) {
             if (!func_get_args()[1] instanceof Context) {
-                throw new InvalidArgumentException;
+                throw new InvalidArgumentException();
             }
 
             $processed = func_get_args()[1];
         } else {
-            $processed = new Context;
+            $processed = new Context();
         }
 
         $objects = [];
@@ -69,7 +73,7 @@ class Enumerator
         } else {
             $objects[] = $variable;
 
-            $reflector = new ObjectReflector;
+            $reflector = new ObjectReflector();
 
             foreach ($reflector->getAttributes($variable) as $value) {
                 if (!is_array($value) && !is_object($value)) {

@@ -1,5 +1,8 @@
 #!/usr/bin/env php
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of resource-operations.
  *
@@ -62,4 +65,3 @@ $buffer .= <<< EOT
 EOT;
 
 file_put_contents(__DIR__ . '/../src/ResourceOperations.php', $buffer);
-

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -63,8 +66,10 @@ class ObjectComparator extends ArrayComparator
         }
 
         // don't compare twice to allow for cyclic dependencies
-        if (in_array([$actual, $expected], $processed, true) ||
-            in_array([$expected, $actual], $processed, true)) {
+        if (
+            in_array([$actual, $expected], $processed, true) ||
+            in_array([$expected, $actual], $processed, true)
+        ) {
             return;
         }
 

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\Util\TestDox;
 
 use const PHP_EOL;
+
 use function array_map;
 use function ceil;
 use function count;
@@ -21,6 +25,7 @@ use function sprintf;
 use function strlen;
 use function strpos;
 use function trim;
+
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -132,7 +137,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
     {
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
-        $this->timer = new Timer;
+        $this->timer = new Timer();
 
         $this->timer->start();
     }
@@ -148,7 +153,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     protected function printHeader(TestResult $result): void
     {
-        $this->write("\n" . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . "\n\n");
+        $this->write("\n" . (new ResourceUsageFormatter())->resourceUsage($this->timer->stop()) . "\n\n");
     }
 
     protected function formatClassName(Test $test): string
@@ -187,8 +192,10 @@ class CliTestDoxPrinter extends TestDoxPrinter
     protected function writeTestResult(array $prevResult, array $result): void
     {
         // spacer line for new suite headers and after verbose messages
-        if ($prevResult['testName'] !== '' &&
-            (!empty($prevResult['message']) || $prevResult['className'] !== $result['className'])) {
+        if (
+            $prevResult['testName'] !== '' &&
+            (!empty($prevResult['message']) || $prevResult['className'] !== $result['className'])
+        ) {
             $this->write(PHP_EOL);
         }
 
@@ -304,8 +311,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
         if ($this->colors) {
             $color  = self::STATUS_STYLES[$result['status']]['color'] ?? '';
-            $prefix = array_map(static function ($p) use ($color)
-            {
+            $prefix = array_map(static function ($p) use ($color) {
                 return Color::colorize($color, $p);
             }, self::PREFIX_DECORATED);
         }

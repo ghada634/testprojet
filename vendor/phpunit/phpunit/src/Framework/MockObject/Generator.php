@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -14,6 +17,7 @@ use const PHP_EOL;
 use const PHP_MAJOR_VERSION;
 use const PREG_OFFSET_CAPTURE;
 use const WSDL_CACHE_NONE;
+
 use function array_merge;
 use function array_pop;
 use function array_unique;
@@ -41,6 +45,7 @@ use function strpos;
 use function strtolower;
 use function substr;
 use function trait_exists;
+
 use Doctrine\Instantiator\Exception\ExceptionInterface as InstantiatorException;
 use Doctrine\Instantiator\Instantiator;
 use Exception;
@@ -197,7 +202,7 @@ EOT;
         }
 
         if (!$callOriginalConstructor && $callOriginalMethods) {
-            throw new OriginalConstructorInvocationRequiredException;
+            throw new OriginalConstructorInvocationRequiredException();
         }
 
         $mock = $this->generate(
@@ -309,8 +314,10 @@ EOT;
      */
     public function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, ?array $mockedMethods = null, bool $cloneArguments = true): MockObject
     {
-        if (class_exists($originalClassName, $callAutoload) ||
-            interface_exists($originalClassName, $callAutoload)) {
+        if (
+            class_exists($originalClassName, $callAutoload) ||
+            interface_exists($originalClassName, $callAutoload)
+        ) {
             try {
                 $reflector = new ReflectionClass($originalClassName);
                 // @codeCoverageIgnoreStart
@@ -491,7 +498,7 @@ EOT;
     public function generateClassFromWsdl(string $wsdlFile, string $className, array $methods = [], array $options = []): string
     {
         if (!extension_loaded('soap')) {
-            throw new SoapExtensionNotAvailableException;
+            throw new SoapExtensionNotAvailableException();
         }
 
         $options = array_merge($options, ['cache_wsdl' => WSDL_CACHE_NONE]);
@@ -709,7 +716,7 @@ EOT;
 
         if ($callOriginalConstructor) {
             if (count($arguments) === 0) {
-                $object = new $className;
+                $object = new $className();
             } else {
                 try {
                     $class = new ReflectionClass($className);
@@ -727,7 +734,7 @@ EOT;
             }
         } else {
             try {
-                $object = (new Instantiator)->instantiate($className);
+                $object = (new Instantiator())->instantiate($className);
             } catch (InstantiatorException $e) {
                 throw new RuntimeException($e->getMessage());
             }
@@ -736,7 +743,7 @@ EOT;
         if ($callOriginalMethods) {
             if (!is_object($proxyTarget)) {
                 if (count($arguments) === 0) {
-                    $proxyTarget = new $type;
+                    $proxyTarget = new $type();
                 } else {
                     try {
                         $class = new ReflectionClass($type);
@@ -779,7 +786,7 @@ EOT;
         $isClass              = false;
         $isInterface          = false;
         $class                = null;
-        $mockMethods          = new MockMethodSet;
+        $mockMethods          = new MockMethodSet();
 
         $_mockClassName = $this->generateClassName(
             $type,
@@ -878,9 +885,11 @@ EOT;
             }
 
             // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
-            if ($isInterface && $class->implementsInterface(Traversable::class) &&
+            if (
+                $isInterface && $class->implementsInterface(Traversable::class) &&
                 !$class->implementsInterface(Iterator::class) &&
-                !$class->implementsInterface(IteratorAggregate::class)) {
+                !$class->implementsInterface(IteratorAggregate::class)
+            ) {
                 $additionalInterfaces[] = Iterator::class;
 
                 $mockMethods->addMethods(

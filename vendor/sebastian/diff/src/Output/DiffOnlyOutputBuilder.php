@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/diff.
  *
@@ -14,6 +17,7 @@ use function fopen;
 use function fwrite;
 use function stream_get_contents;
 use function substr;
+
 use SebastianBergmann\Diff\Differ;
 
 /**

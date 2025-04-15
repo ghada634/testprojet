@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of phpunit/php-file-iterator.
  *
@@ -17,6 +20,7 @@ use function str_replace;
 use function strlen;
 use function strpos;
 use function substr;
+
 use FilterIterator;
 
 class Iterator extends FilterIterator
@@ -105,9 +109,11 @@ class Iterator extends FilterIterator
         $matched = false;
 
         foreach ($subStrings as $string) {
-            if (($type === self::PREFIX && strpos($filename, $string) === 0) ||
+            if (
+                ($type === self::PREFIX && strpos($filename, $string) === 0) ||
                 ($type === self::SUFFIX &&
-                 substr($filename, -1 * strlen($string)) === $string)) {
+                 substr($filename, -1 * strlen($string)) === $string)
+            ) {
                 $matched = true;
 
                 break;

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,7 +13,9 @@
 namespace PHPUnit\Util\PHP;
 
 use const PHP_MAJOR_VERSION;
+
 use function tmpfile;
+
 use PHPUnit\Framework\Exception;
 
 /**

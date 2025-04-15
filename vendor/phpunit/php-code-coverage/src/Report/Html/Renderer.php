@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -14,6 +17,7 @@ use function count;
 use function sprintf;
 use function str_repeat;
 use function substr_count;
+
 use SebastianBergmann\CodeCoverage\Node\AbstractNode;
 use SebastianBergmann\CodeCoverage\Node\Directory as DirectoryNode;
 use SebastianBergmann\CodeCoverage\Node\File as FileNode;
@@ -262,8 +266,10 @@ abstract class Renderer
         $id    = $node->id();
         $depth = substr_count($id, '/');
 
-        if ($id !== 'index' &&
-            $node instanceof DirectoryNode) {
+        if (
+            $id !== 'index' &&
+            $node instanceof DirectoryNode
+        ) {
             $depth++;
         }
 
@@ -292,8 +298,10 @@ abstract class Renderer
             return 'danger';
         }
 
-        if ($percent > $this->lowUpperBound &&
-            $percent < $this->highLowerBound) {
+        if (
+            $percent > $this->lowUpperBound &&
+            $percent < $this->highLowerBound
+        ) {
             return 'warning';
         }
 
@@ -302,7 +310,7 @@ abstract class Renderer
 
     private function runtimeString(): string
     {
-        $runtime = new Runtime;
+        $runtime = new Runtime();
 
         return sprintf(
             '<a href="%s" target="_top">%s %s</a>',

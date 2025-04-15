@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -12,6 +15,7 @@ namespace PHPUnit\Util;
 use const ENT_COMPAT;
 use const ENT_SUBSTITUTE;
 use const PHP_SAPI;
+
 use function assert;
 use function count;
 use function dirname;

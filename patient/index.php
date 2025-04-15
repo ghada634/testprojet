@@ -30,35 +30,34 @@
 
     session_start();
 
-    if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='p'){
+    if (isset($_SESSION["user"])) {
+        if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'p') {
             header("location: ../login.php");
-        }else{
-            $useremail=$_SESSION["user"];
+        } else {
+            $useremail = $_SESSION["user"];
         }
-
-    }else{
+    } else {
         header("location: ../login.php");
     }
-    
+
 
     //import database
     include("../connection.php");
 
-    $sqlmain= "select * from patient where pemail=?";
+    $sqlmain = "select * from patient where pemail=?";
     $stmt = $database->prepare($sqlmain);
-    $stmt->bind_param("s",$useremail);
+    $stmt->bind_param("s", $useremail);
     $stmt->execute();
     $userrow = $stmt->get_result();
-    $userfetch=$userrow->fetch_assoc();
+    $userfetch = $userrow->fetch_assoc();
 
-    $userid= $userfetch["pid"];
-    $username=$userfetch["pname"];
+    $userid = $userfetch["pid"];
+    $username = $userfetch["pname"];
 
 
     //echo $userid;
     //echo $username;
-    
+
     ?>
     <div class="container">
         <div class="menu">
@@ -71,8 +70,8 @@
                                     <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                                 </td>
                                 <td style="padding:0px;margin:0px;">
-                                    <p class="profile-title"><?php echo substr($username,0,13)  ?>..</p>
-                                    <p class="profile-subtitle"><?php echo substr($useremail,0,22)  ?></p>
+                                    <p class="profile-title"><?php echo substr($username, 0, 13)  ?>..</p>
+                                    <p class="profile-subtitle"><?php echo substr($useremail, 0, 22)  ?></p>
                                 </td>
                             </tr>
                             <tr>
@@ -129,20 +128,20 @@
                                     Today's Date
                                 </p>
                                 <p class="heading-sub12" style="padding: 0;margin: 0;">
-                                    <?php 
-                                date_default_timezone_set('Asia/Kolkata');
-        
-                                $today = date('Y-m-d');
-                                echo $today;
+                                    <?php
+                                    date_default_timezone_set('Asia/Kolkata');
+
+                                    $today = date('Y-m-d');
+                                    echo $today;
 
 
-                                $patientrow = $database->query("select  * from  patient;");
-                                $doctorrow = $database->query("select  * from  doctor;");
-                                $appointmentrow = $database->query("select  * from  appointment where appodate>='$today';");
-                                $schedulerow = $database->query("select  * from  schedule where scheduledate='$today';");
+                                    $patientrow = $database->query("select  * from  patient;");
+                                    $doctorrow = $database->query("select  * from  doctor;");
+                                    $appointmentrow = $database->query("select  * from  appointment where appodate>='$today';");
+                                    $schedulerow = $database->query("select  * from  schedule where scheduledate='$today';");
 
 
-                                ?>
+                                    ?>
                                 </p>
                             </td>
                             <td width="10%">
@@ -174,17 +173,16 @@
                                 <?php
                                     echo '<datalist id="doctors">';
                                     $list11 = $database->query("select  docname,docemail from  doctor;");
-    
-                                    for ($y=0;$y<$list11->num_rows;$y++){
-                                        $row00=$list11->fetch_assoc();
-                                        $d=$row00["docname"];
-                                        
-                                        echo "<option value='$d'><br/>";
-                                        
-                                    };
-    
+
+                                for ($y = 0; $y < $list11->num_rows; $y++) {
+                                    $row00 = $list11->fetch_assoc();
+                                    $d = $row00["docname"];
+
+                                    echo "<option value='$d'><br/>";
+                                };
+
                                 echo ' </datalist>';
-    ?>
+                                ?>
                                 
                            
                                 <input type="Submit" value="Search" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
@@ -325,13 +323,13 @@
                                         <tbody>
                                         
                                             <?php
-                                            $nextweek=date("Y-m-d",strtotime("+1 week"));
-                                                $sqlmain= "select * from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  where  patient.pid=$userid  and schedule.scheduledate>='$today' order by schedule.scheduledate asc";
+                                            $nextweek = date("Y-m-d", strtotime("+1 week"));
+                                                $sqlmain = "select * from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  where  patient.pid=$userid  and schedule.scheduledate>='$today' order by schedule.scheduledate asc";
                                                 //echo $sqlmain;
-                                                $result= $database->query($sqlmain);
-                
-                                                if($result->num_rows==0){
-                                                    echo '<tr>
+                                                $result = $database->query($sqlmain);
+
+                                            if ($result->num_rows == 0) {
+                                                echo '<tr>
                                                     <td colspan="4">
                                                     <br><br><br><br>
                                                     <center>
@@ -345,39 +343,36 @@
                                                     <br><br><br><br>
                                                     </td>
                                                     </tr>';
-                                                    
-                                                }
-                                                else{
-                                                for ( $x=0; $x<$result->num_rows;$x++){
-                                                    $row=$result->fetch_assoc();
-                                                    $scheduleid=$row["scheduleid"];
-                                                    $title=$row["title"];
-                                                    $apponum=$row["apponum"];
-                                                    $docname=$row["docname"];
-                                                    $scheduledate=$row["scheduledate"];
-                                                    $scheduletime=$row["scheduletime"];
-                                                   
+                                            } else {
+                                                for ($x = 0; $x < $result->num_rows; $x++) {
+                                                    $row = $result->fetch_assoc();
+                                                    $scheduleid = $row["scheduleid"];
+                                                    $title = $row["title"];
+                                                    $apponum = $row["apponum"];
+                                                    $docname = $row["docname"];
+                                                    $scheduledate = $row["scheduledate"];
+                                                    $scheduletime = $row["scheduletime"];
+
                                                     echo '<tr>
-                                                        <td style="padding:30px;font-size:25px;font-weight:700;"> &nbsp;'.
+                                                        <td style="padding:30px;font-size:25px;font-weight:700;"> &nbsp;' .
                                                         $apponum
-                                                        .'</td>
-                                                        <td style="padding:20px;"> &nbsp;'.
-                                                        substr($title,0,30)
-                                                        .'</td>
+                                                        . '</td>
+                                                        <td style="padding:20px;"> &nbsp;' .
+                                                        substr($title, 0, 30)
+                                                        . '</td>
                                                         <td>
-                                                        '.substr($docname,0,20).'
+                                                        ' . substr($docname, 0, 20) . '
                                                         </td>
                                                         <td style="text-align:center;">
-                                                            '.substr($scheduledate,0,10).' '.substr($scheduletime,0,5).'
+                                                            ' . substr($scheduledate, 0, 10) . ' ' . substr($scheduletime, 0, 5) . '
                                                         </td>
 
                 
                                                        
                                                     </tr>';
-                                                    
                                                 }
                                             }
-                                                 
+
                                             ?>
                  
                                             </tbody>

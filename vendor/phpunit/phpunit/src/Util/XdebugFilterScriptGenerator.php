@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,12 +13,14 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
+
 use function addslashes;
 use function array_map;
 use function implode;
 use function is_string;
 use function realpath;
 use function sprintf;
+
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage as FilterConfiguration;
 
 /**
@@ -28,8 +33,7 @@ final class XdebugFilterScriptGenerator
     public function generate(FilterConfiguration $filter): string
     {
         $files = array_map(
-            static function ($item)
-            {
+            static function ($item) {
                 return sprintf(
                     "        '%s'",
                     $item,

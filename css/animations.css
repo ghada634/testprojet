@@ -12,7 +12,7 @@
             transform: translateX(0);
     }
 }
-    
+
 
 
 @keyframes transitionIn-Y-over{
@@ -27,7 +27,7 @@
             transform: translateY(0);
     }
 }
-    
+
 @keyframes transitionIn-Y-bottom{
     from {
             opacity: 0;
@@ -40,6 +40,6 @@
             transform: translateY(0);
     }
 }
-    
+
 
 /* Transition end */

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -18,6 +21,7 @@ use const LC_TIME;
 use const PATHINFO_FILENAME;
 use const PHP_EOL;
 use const PHP_URL_PATH;
+
 use function array_filter;
 use function array_flip;
 use function array_keys;
@@ -64,6 +68,7 @@ use function sys_get_temp_dir;
 use function tempnam;
 use function trim;
 use function var_export;
+
 use DeepCopy\DeepCopy;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
@@ -363,7 +368,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public static function any(): AnyInvokedCountMatcher
     {
-        return new AnyInvokedCountMatcher;
+        return new AnyInvokedCountMatcher();
     }
 
     /**
@@ -390,7 +395,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public static function atLeastOnce(): InvokedAtLeastOnceMatcher
     {
-        return new InvokedAtLeastOnceMatcher;
+        return new InvokedAtLeastOnceMatcher();
     }
 
     /**
@@ -473,7 +478,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public static function returnSelf(): ReturnSelfStub
     {
-        return new ReturnSelfStub;
+        return new ReturnSelfStub();
     }
 
     public static function throwException(Throwable $exception): ExceptionStub
@@ -827,10 +832,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->setTestResultObject($result);
         }
 
-        if (!$this instanceof ErrorTestCase &&
+        if (
+            !$this instanceof ErrorTestCase &&
             !$this instanceof WarningTestCase &&
             !$this instanceof SkippedTestCase &&
-            !$this->handleDependencies()) {
+            !$this->handleDependencies()
+        ) {
             return $result;
         }
 
@@ -1526,7 +1533,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             if ($includeData) {
-                $exporter = new Exporter;
+                $exporter = new Exporter();
 
                 $buffer .= sprintf(' (%s)', $exporter->shortenedRecursiveExport($this->data));
             }
@@ -1741,17 +1748,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     protected function setLocale(...$args): void
     {
         if (count($args) < 2) {
-            throw new Exception;
+            throw new Exception();
         }
 
         [$category, $locale] = $args;
 
         if (!in_array($category, self::LOCALE_CATEGORIES, true)) {
-            throw new Exception;
+            throw new Exception();
         }
 
         if (!is_array($locale) && !is_string($locale)) {
-            throw new Exception;
+            throw new Exception();
         }
 
         $this->locale[$category] = setlocale($category, 0);
@@ -1842,8 +1849,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $mockedMethodsThatDontExist = array_filter(
             $methods,
-            static function (string $method) use ($reflector)
-            {
+            static function (string $method) use ($reflector) {
                 return !$reflector->hasMethod($method);
             },
         );
@@ -2068,7 +2074,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createResult(): TestResult
     {
-        return new TestResult;
+        return new TestResult();
     }
 
     /**
@@ -2190,9 +2196,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             if (isset($passed[$dependencyTarget])) {
-                if ($passed[$dependencyTarget]['size'] != TestUtil::UNKNOWN &&
+                if (
+                    $passed[$dependencyTarget]['size'] != TestUtil::UNKNOWN &&
                     $this->getSize() != TestUtil::UNKNOWN &&
-                    $passed[$dependencyTarget]['size'] > $this->getSize()) {
+                    $passed[$dependencyTarget]['size'] > $this->getSize()
+                ) {
                     $this->result->addError(
                         $this,
                         new SkippedTestError(
@@ -2205,7 +2213,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 }
 
                 if ($dependency->useDeepClone()) {
-                    $deepCopy = new DeepCopy;
+                    $deepCopy = new DeepCopy();
                     $deepCopy->skipUncloneable(false);
 
                     $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($passed[$dependencyTarget]['result']);
@@ -2285,7 +2293,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function getMockObjectGenerator(): MockGenerator
     {
         if ($this->mockObjectGenerator === null) {
-            $this->mockObjectGenerator = new MockGenerator;
+            $this->mockObjectGenerator = new MockGenerator();
         }
 
         return $this->mockObjectGenerator;
@@ -2328,8 +2336,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function snapshotGlobalState(): void
     {
-        if ($this->runTestInSeparateProcess || $this->inIsolation ||
-            (!$this->backupGlobals && !$this->backupStaticAttributes)) {
+        if (
+            $this->runTestInSeparateProcess || $this->inIsolation ||
+            (!$this->backupGlobals && !$this->backupStaticAttributes)
+        ) {
             return;
         }
 
@@ -2357,7 +2367,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
         }
 
-        $restorer = new Restorer;
+        $restorer = new Restorer();
 
         if ($this->backupGlobals) {
             $restorer->restoreGlobalVariables($this->snapshot);
@@ -2376,7 +2386,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function createGlobalStateSnapshot(bool $backupGlobals): Snapshot
     {
-        $excludeList = new ExcludeList;
+        $excludeList = new ExcludeList();
 
         foreach ($this->backupGlobalsExcludeList as $globalVariable) {
             $excludeList->addGlobalVariable($globalVariable);
@@ -2470,7 +2480,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         if ($before != $after) {
             $differ   = new Differ($header);
-            $exporter = new Exporter;
+            $exporter = new Exporter();
 
             $diff = $differ->diff(
                 $exporter->export($before),
@@ -2486,7 +2496,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function getProphet(): Prophet
     {
         if ($this->prophet === null) {
-            $this->prophet = new Prophet;
+            $this->prophet = new Prophet();
         }
 
         return $this->prophet;
@@ -2497,7 +2507,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function shouldInvocationMockerBeReset(MockObject $mock): bool
     {
-        $enumerator = new Enumerator;
+        $enumerator = new Enumerator();
 
         foreach ($enumerator->enumerate($this->dependencyInput) as $object) {
             if ($mock === $object) {
@@ -2520,7 +2530,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function registerMockObjectsFromTestArguments(array $testArguments, array &$visited = []): void
     {
         if ($this->registerMockObjectsFromTestArgumentsRecursively) {
-            foreach ((new Enumerator)->enumerate($testArguments) as $object) {
+            foreach ((new Enumerator())->enumerate($testArguments) as $object) {
                 if ($object instanceof MockObject) {
                     $this->registerMockObject($object);
                 }
@@ -2612,9 +2622,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
             // @codeCoverageIgnoreEnd
 
-            if ($this->expectedException === 'PHPUnit\Framework\Exception' ||
+            if (
+                $this->expectedException === 'PHPUnit\Framework\Exception' ||
                 $this->expectedException === '\PHPUnit\Framework\Exception' ||
-                $reflector->isSubclassOf(Exception::class)) {
+                $reflector->isSubclassOf(Exception::class)
+            ) {
                 $result = true;
             }
         }

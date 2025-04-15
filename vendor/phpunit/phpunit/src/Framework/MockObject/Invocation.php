@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -20,6 +23,7 @@ use function sprintf;
 use function strpos;
 use function strtolower;
 use function substr;
+
 use Doctrine\Instantiator\Instantiator;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\Cloner;
@@ -144,10 +148,12 @@ final class Invocation implements SelfDescribing
         $types = array_map('strtolower', $types);
 
         if (!$intersection && !$unionContainsIntersections) {
-            if (in_array('', $types, true) ||
+            if (
+                in_array('', $types, true) ||
                 in_array('null', $types, true) ||
                 in_array('mixed', $types, true) ||
-                in_array('void', $types, true)) {
+                in_array('void', $types, true)
+            ) {
                 return null;
             }
 
@@ -155,8 +161,10 @@ final class Invocation implements SelfDescribing
                 return true;
             }
 
-            if (in_array('false', $types, true) ||
-                in_array('bool', $types, true)) {
+            if (
+                in_array('false', $types, true) ||
+                in_array('bool', $types, true)
+            ) {
                 return false;
             }
 
@@ -178,7 +186,7 @@ final class Invocation implements SelfDescribing
 
             if (in_array('static', $types, true)) {
                 try {
-                    return (new Instantiator)->instantiate(get_class($this->object));
+                    return (new Instantiator())->instantiate(get_class($this->object));
                 } catch (Throwable $t) {
                     throw new RuntimeException(
                         $t->getMessage(),
@@ -189,21 +197,23 @@ final class Invocation implements SelfDescribing
             }
 
             if (in_array('object', $types, true)) {
-                return new stdClass;
+                return new stdClass();
             }
 
-            if (in_array('callable', $types, true) ||
-                in_array('closure', $types, true)) {
-                return static function (): void
-                {
+            if (
+                in_array('callable', $types, true) ||
+                in_array('closure', $types, true)
+            ) {
+                return static function (): void {
                 };
             }
 
-            if (in_array('traversable', $types, true) ||
+            if (
+                in_array('traversable', $types, true) ||
                 in_array('generator', $types, true) ||
-                in_array('iterable', $types, true)) {
-                $generator = static function (): \Generator
-                {
+                in_array('iterable', $types, true)
+            ) {
+                $generator = static function (): \Generator {
                     yield from [];
                 };
 
@@ -212,7 +222,7 @@ final class Invocation implements SelfDescribing
 
             if (!$union) {
                 try {
-                    return (new Generator)->getMock($this->returnType, [], [], '', false);
+                    return (new Generator())->getMock($this->returnType, [], [], '', false);
                 } catch (Throwable $t) {
                     if ($t instanceof Exception) {
                         throw $t;
@@ -229,7 +239,7 @@ final class Invocation implements SelfDescribing
 
         if ($intersection && $this->onlyInterfaces($types)) {
             try {
-                return (new Generator)->getMockForInterfaces($types);
+                return (new Generator())->getMockForInterfaces($types);
             } catch (Throwable $t) {
                 throw new RuntimeException(
                     sprintf(
@@ -263,7 +273,7 @@ final class Invocation implements SelfDescribing
 
     public function toString(): string
     {
-        $exporter = new Exporter;
+        $exporter = new Exporter();
 
         return sprintf(
             '%s::%s(%s)%s',

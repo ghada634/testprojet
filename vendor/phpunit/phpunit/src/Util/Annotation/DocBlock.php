@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +14,7 @@ namespace PHPUnit\Util\Annotation;
 
 use const JSON_ERROR_NONE;
 use const PREG_OFFSET_CAPTURE;
+
 use function array_filter;
 use function array_key_exists;
 use function array_map;
@@ -40,6 +44,7 @@ use function strpos;
 use function strtolower;
 use function substr;
 use function trim;
+
 use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\SkippedTestError;
@@ -220,7 +225,7 @@ final class DocBlock
                 }
 
                 try {
-                    $versionConstraintParser = new VersionConstraintParser;
+                    $versionConstraintParser = new VersionConstraintParser();
 
                     $requires[$matches['name'] . '_constraint'] = [
                         'constraint' => $versionConstraintParser->parse(trim($matches['constraint'])),
@@ -282,7 +287,7 @@ final class DocBlock
         }
 
         if ($data === []) {
-            throw new SkippedTestError;
+            throw new SkippedTestError();
         }
 
         foreach ($data as $key => $value) {
@@ -529,8 +534,7 @@ final class DocBlock
             $annotations = array_merge(
                 $annotations,
                 ...array_map(
-                    static function (ReflectionClass $trait): array
-                    {
+                    static function (ReflectionClass $trait): array {
                         return self::parseDocBlock((string) $trait->getDocComment());
                     },
                     array_values($reflector->getTraits()),

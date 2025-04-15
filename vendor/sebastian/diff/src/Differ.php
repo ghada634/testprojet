@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/diff.
  *
@@ -12,6 +15,7 @@ namespace SebastianBergmann\Diff;
 use const PHP_INT_SIZE;
 use const PREG_SPLIT_DELIM_CAPTURE;
 use const PREG_SPLIT_NO_EMPTY;
+
 use function array_shift;
 use function array_unshift;
 use function array_values;
@@ -30,6 +34,7 @@ use function prev;
 use function reset;
 use function sprintf;
 use function substr;
+
 use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
 use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
@@ -60,7 +65,7 @@ final class Differ
         if ($outputBuilder instanceof DiffOutputBuilderInterface) {
             $this->outputBuilder = $outputBuilder;
         } elseif (null === $outputBuilder) {
-            $this->outputBuilder = new UnifiedDiffOutputBuilder;
+            $this->outputBuilder = new UnifiedDiffOutputBuilder();
         } elseif (is_string($outputBuilder)) {
             // PHPUnit 6.1.4, 6.2.0, 6.2.1, 6.2.2, and 6.2.3 support
             // @see https://github.com/sebastianbergmann/phpunit/issues/2734#issuecomment-314514056
@@ -203,10 +208,10 @@ final class Differ
         $memoryLimit = 100 * 1024 * 1024;
 
         if ($this->calculateEstimatedFootprint($from, $to) > $memoryLimit) {
-            return new MemoryEfficientLongestCommonSubsequenceCalculator;
+            return new MemoryEfficientLongestCommonSubsequenceCalculator();
         }
 
-        return new TimeEfficientLongestCommonSubsequenceCalculator;
+        return new TimeEfficientLongestCommonSubsequenceCalculator();
     }
 
     /**

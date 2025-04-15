@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -11,6 +14,7 @@ namespace SebastianBergmann\CodeCoverage\Driver;
 
 use function phpversion;
 use function version_compare;
+
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverAvailableException;
 use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverWithPathCoverageSupportAvailableException;
@@ -28,10 +32,10 @@ final class Selector
      */
     public function forLineCoverage(Filter $filter): Driver
     {
-        $runtime = new Runtime;
+        $runtime = new Runtime();
 
         if ($runtime->hasPHPDBGCodeCoverage()) {
-            return new PhpdbgDriver;
+            return new PhpdbgDriver();
         }
 
         if ($runtime->hasPCOV()) {
@@ -50,7 +54,7 @@ final class Selector
             return $driver;
         }
 
-        throw new NoCodeCoverageDriverAvailableException;
+        throw new NoCodeCoverageDriverAvailableException();
     }
 
     /**
@@ -61,7 +65,7 @@ final class Selector
      */
     public function forLineAndPathCoverage(Filter $filter): Driver
     {
-        if ((new Runtime)->hasXdebug()) {
+        if ((new Runtime())->hasXdebug()) {
             if (version_compare(phpversion('xdebug'), '3', '>=')) {
                 $driver = new Xdebug3Driver($filter);
             } else {
@@ -74,6 +78,6 @@ final class Selector
             return $driver;
         }
 
-        throw new NoCodeCoverageDriverWithPathCoverageSupportAvailableException;
+        throw new NoCodeCoverageDriverWithPathCoverageSupportAvailableException();
     }
 }

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -21,6 +24,7 @@ use function explode;
 use function get_class;
 use function is_array;
 use function sort;
+
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Test;
@@ -123,8 +127,8 @@ final class CodeCoverage
     {
         $this->driver = $driver;
         $this->filter = $filter;
-        $this->data   = new ProcessedCodeCoverageData;
-        $this->wizard = new Wizard;
+        $this->data   = new ProcessedCodeCoverageData();
+        $this->wizard = new Wizard();
     }
 
     /**
@@ -145,7 +149,7 @@ final class CodeCoverage
     public function clear(): void
     {
         $this->currentId    = null;
-        $this->data         = new ProcessedCodeCoverageData;
+        $this->data         = new ProcessedCodeCoverageData();
         $this->tests        = [];
         $this->cachedReport = null;
     }
@@ -263,7 +267,7 @@ final class CodeCoverage
         }
 
         if ($id === null) {
-            throw new TestIdMissingException;
+            throw new TestIdMissingException();
         }
 
         $this->cachedReport = null;
@@ -469,9 +473,11 @@ final class CodeCoverage
             return;
         }
 
-        if ($this->checkForUnintentionallyCoveredCode &&
+        if (
+            $this->checkForUnintentionallyCoveredCode &&
             (!$this->currentId instanceof TestCase ||
-            (!$this->currentId->isMedium() && !$this->currentId->isLarge()))) {
+            (!$this->currentId->isMedium() && !$this->currentId->isLarge()))
+        ) {
             $this->performUnintentionallyCoveredCodeCheck($rawData, $linesToBeCovered, $linesToBeUsed);
         }
 

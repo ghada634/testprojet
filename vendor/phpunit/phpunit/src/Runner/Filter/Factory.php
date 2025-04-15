@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +14,7 @@ namespace PHPUnit\Runner\Filter;
 
 use function assert;
 use function sprintf;
+
 use FilterIterator;
 use Iterator;
 use PHPUnit\Framework\TestSuite;

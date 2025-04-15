@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -15,6 +18,7 @@ use function method_exists;
 use function sprintf;
 use function str_replace;
 use function trim;
+
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\AssertionFailedError;

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -14,6 +17,7 @@ use function count;
 use function get_class;
 use function sprintf;
 use function trim;
+
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\InvalidDataSetException;
 use PHPUnit\Util\Test as TestUtil;
@@ -135,7 +139,7 @@ final class TestBuilder
     /** @psalm-param class-string $className */
     private function buildTestWithoutData(string $className)
     {
-        return new $className;
+        return new $className();
     }
 
     /** @psalm-param class-string $className */
@@ -154,9 +158,11 @@ final class TestBuilder
 
         $groups = TestUtil::getGroups($className, $methodName);
 
-        if ($data instanceof ErrorTestCase ||
+        if (
+            $data instanceof ErrorTestCase ||
             $data instanceof SkippedTestCase ||
-            $data instanceof IncompleteTestCase) {
+            $data instanceof IncompleteTestCase
+        ) {
             $dataProviderTestSuite->addTest($data, $groups);
         } else {
             foreach ($data as $_dataName => $_data) {

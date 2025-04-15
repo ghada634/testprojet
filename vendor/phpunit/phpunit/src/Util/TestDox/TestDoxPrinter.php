@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,12 +13,14 @@
 namespace PHPUnit\Util\TestDox;
 
 use const PHP_EOL;
+
 use function array_map;
 use function get_class;
 use function implode;
 use function method_exists;
 use function preg_split;
 use function trim;
+
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Reorderable;
@@ -243,8 +248,10 @@ class TestDoxPrinter extends DefaultResultPrinter
         }
 
         if ($this->testFlushIndex > 0) {
-            if ($this->enableOutputBuffer &&
-                isset($this->originalExecutionOrder[$this->testFlushIndex - 1])) {
+            if (
+                $this->enableOutputBuffer &&
+                isset($this->originalExecutionOrder[$this->testFlushIndex - 1])
+            ) {
                 $prevResult = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex - 1]);
             } else {
                 $prevResult = $this->testResults[$this->testFlushIndex - 1];
@@ -381,8 +388,7 @@ class TestDoxPrinter extends DefaultResultPrinter
         return implode(
             PHP_EOL,
             array_map(
-                static function (string $text) use ($prefix)
-                {
+                static function (string $text) use ($prefix) {
                     return '   ' . $prefix . ($text ? ' ' . $text : '');
                 },
                 preg_split('/\r\n|\r|\n/', $message),

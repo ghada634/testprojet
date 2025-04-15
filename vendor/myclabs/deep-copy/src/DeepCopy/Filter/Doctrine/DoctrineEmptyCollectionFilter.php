@@ -25,4 +25,4 @@ class DoctrineEmptyCollectionFilter implements Filter
 
         $reflectionProperty->setValue($object, new ArrayCollection());
     }
-} 
+}

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/type.
  *
@@ -17,6 +20,7 @@ use function function_exists;
 use function is_array;
 use function is_object;
 use function is_string;
+
 use Closure;
 use ReflectionClass;
 use ReflectionException;

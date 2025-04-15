@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\Util\Annotation;
 
 use function array_key_exists;
+
 use PHPUnit\Util\Exception;
 use ReflectionClass;
 use ReflectionException;
@@ -34,7 +38,7 @@ final class Registry
 
     public static function getInstance(): self
     {
-        return self::$instance ?? self::$instance = new self;
+        return self::$instance ?? self::$instance = new self();
     }
 
     private function __construct()

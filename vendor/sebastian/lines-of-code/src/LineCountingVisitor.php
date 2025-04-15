@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/lines-of-code.
  *
@@ -12,6 +15,7 @@ namespace SebastianBergmann\LinesOfCode;
 use function array_merge;
 use function array_unique;
 use function count;
+
 use PhpParser\Comment;
 use PhpParser\Node;
 use PhpParser\Node\Expr;

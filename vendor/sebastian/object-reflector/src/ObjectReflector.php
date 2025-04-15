@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/object-reflector.
  *
@@ -24,7 +27,7 @@ class ObjectReflector
     public function getAttributes($object): array
     {
         if (!is_object($object)) {
-            throw new InvalidArgumentException;
+            throw new InvalidArgumentException();
         }
 
         $attributes = [];

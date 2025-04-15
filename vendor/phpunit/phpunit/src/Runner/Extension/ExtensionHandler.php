@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +14,7 @@ namespace PHPUnit\Runner\Extension;
 
 use function class_exists;
 use function sprintf;
+
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\Exception;
 use PHPUnit\Runner\Hook;

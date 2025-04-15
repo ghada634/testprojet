@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
+
 use function array_keys;
 use function array_map;
 use function array_merge;
@@ -33,6 +37,7 @@ use function preg_quote;
 use function sprintf;
 use function strpos;
 use function substr;
+
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Runner\BaseTestRunner;
@@ -210,8 +215,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $constructor = $theClass->getConstructor();
 
-        if ($constructor !== null &&
-            !$constructor->isPublic()) {
+        if (
+            $constructor !== null &&
+            !$constructor->isPublic()
+        ) {
             $this->addTest(
                 new WarningTestCase(
                     sprintf(
@@ -224,7 +231,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return;
         }
 
-        foreach ((new Reflection)->publicMethodsInTestClass($theClass) as $method) {
+        foreach ((new Reflection())->publicMethodsInTestClass($theClass) as $method) {
             if (!TestUtil::isTestMethod($method)) {
                 continue;
             }
@@ -362,7 +369,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $this->addTest(new self($testClass));
             }
         } else {
-            throw new Exception;
+            throw new Exception();
         }
     }
 
@@ -570,8 +577,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     public function getGroups(): array
     {
         return array_map(
-            static function ($key): string
-            {
+            static function ($key): string {
                 return (string) $key;
             },
             array_keys($this->groups),
@@ -629,7 +635,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         call_user_func([$this->name, $beforeClassMethod]);
                     }
                 }
-            } catch (SkippedTestError|SkippedTestSuiteError $error) {
+            } catch (SkippedTestError | SkippedTestSuiteError $error) {
                 foreach ($this->tests() as $test) {
                     $result->startTest($test);
                     $result->addFailure($test, $error, 0);
@@ -878,7 +884,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     protected function createResult(): TestResult
     {
-        return new TestResult;
+        return new TestResult();
     }
 
     /**
@@ -888,7 +894,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     {
         $methodName = $method->getName();
 
-        $test = (new TestBuilder)->build($class, $methodName);
+        $test = (new TestBuilder())->build($class, $methodName);
 
         if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
             $test->setDependencies(

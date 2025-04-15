@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
+
 use function class_exists;
 use function defined;
 use function dirname;
@@ -18,6 +22,7 @@ use function realpath;
 use function sprintf;
 use function strpos;
 use function sys_get_temp_dir;
+
 use Composer\Autoload\ClassLoader;
 use DeepCopy\DeepCopy;
 use Doctrine\Instantiator\Instantiator;

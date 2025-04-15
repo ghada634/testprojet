@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/type.
  *
@@ -10,6 +13,7 @@
 namespace SebastianBergmann\Type;
 
 use const PHP_VERSION;
+
 use function get_class;
 use function gettype;
 use function strtolower;
@@ -21,11 +25,11 @@ abstract class Type
     {
         if ($allowsNull === false) {
             if ($value === true) {
-                return new TrueType;
+                return new TrueType();
             }
 
             if ($value === false) {
-                return new FalseType;
+                return new FalseType();
             }
         }
 
@@ -47,7 +51,7 @@ abstract class Type
     public static function fromName(string $typeName, bool $allowsNull): self
     {
         if (version_compare(PHP_VERSION, '8.1.0-dev', '>=') && strtolower($typeName) === 'never') {
-            return new NeverType;
+            return new NeverType();
         }
 
         switch (strtolower($typeName)) {
@@ -55,25 +59,25 @@ abstract class Type
                 return new CallableType($allowsNull);
 
             case 'true':
-                return new TrueType;
+                return new TrueType();
 
             case 'false':
-                return new FalseType;
+                return new FalseType();
 
             case 'iterable':
                 return new IterableType($allowsNull);
 
             case 'null':
-                return new NullType;
+                return new NullType();
 
             case 'object':
                 return new GenericObjectType($allowsNull);
 
             case 'unknown type':
-                return new UnknownType;
+                return new UnknownType();
 
             case 'void':
-                return new VoidType;
+                return new VoidType();
 
             case 'array':
             case 'bool':

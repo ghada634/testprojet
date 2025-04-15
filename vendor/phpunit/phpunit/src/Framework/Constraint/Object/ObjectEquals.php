@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +14,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use function get_class;
 use function is_object;
+
 use PHPUnit\Framework\ActualValueIsNotAnObjectException;
 use PHPUnit\Framework\ComparisonMethodDoesNotAcceptParameterTypeException;
 use PHPUnit\Framework\ComparisonMethodDoesNotDeclareBoolReturnTypeException;
@@ -57,7 +61,7 @@ final class ObjectEquals extends Constraint
     protected function matches($other): bool
     {
         if (!is_object($other)) {
-            throw new ActualValueIsNotAnObjectException;
+            throw new ActualValueIsNotAnObjectException();
         }
 
         $object = new ReflectionObject($other);

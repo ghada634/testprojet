@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,9 +13,11 @@
 namespace PHPUnit\Util;
 
 use const PHP_EOL;
+
 use function get_class;
 use function sprintf;
 use function str_replace;
+
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;

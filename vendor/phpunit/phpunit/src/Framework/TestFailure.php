@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -12,6 +15,7 @@ namespace PHPUnit\Framework;
 use function get_class;
 use function sprintf;
 use function trim;
+
 use PHPUnit\Framework\Error\Error;
 use Throwable;
 

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -26,6 +29,7 @@ use function stream_select;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
+
 use PHPUnit\Framework\Exception;
 
 /**
@@ -46,8 +50,10 @@ class DefaultPhpProcess extends AbstractPhpProcess
     public function runJob(string $job, array $settings = []): array
     {
         if ($this->stdin || $this->useTemporaryFile()) {
-            if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
-                file_put_contents($this->tempFile, $job) === false) {
+            if (
+                !($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
+                file_put_contents($this->tempFile, $job) === false
+            ) {
                 throw new Exception(
                     'Unable to write temporary file',
                 );

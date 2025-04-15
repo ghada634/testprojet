@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -16,10 +19,12 @@ use const E_USER_DEPRECATED;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
+
 use function defined;
 use function error_reporting;
 use function restore_error_handler;
 use function set_error_handler;
+
 use PHPUnit\Framework\Error\Deprecated;
 use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\Error\Notice;
@@ -58,8 +63,7 @@ final class ErrorHandler
     public static function invokeIgnoringWarnings(callable $callable)
     {
         set_error_handler(
-            static function ($errorNumber, $errorString)
-            {
+            static function ($errorNumber, $errorString) {
                 if ($errorNumber === E_WARNING) {
                     return;
                 }

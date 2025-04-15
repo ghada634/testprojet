@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
+
 use function class_exists;
 use function count;
 use function extension_loaded;
@@ -20,6 +24,7 @@ use function xdebug_get_monitored_functions;
 use function xdebug_is_debugger_active;
 use function xdebug_start_function_monitor;
 use function xdebug_stop_function_monitor;
+
 use AssertionError;
 use Countable;
 use Error;
@@ -694,16 +699,18 @@ final class TestResult implements Countable
             xdebug_start_function_monitor(ResourceOperations::getFunctions());
         }
 
-        $timer = new Timer;
+        $timer = new Timer();
         $timer->start();
 
         try {
-            $invoker = new Invoker;
+            $invoker = new Invoker();
 
-            if (!$test instanceof ErrorTestCase &&
+            if (
+                !$test instanceof ErrorTestCase &&
                 !$test instanceof WarningTestCase &&
                 $this->shouldTimeLimitBeEnforced($size) &&
-                $invoker->canInvokeWithTimeout()) {
+                $invoker->canInvokeWithTimeout()
+            ) {
                 switch ($size) {
                     case TestUtil::SMALL:
                         $_timeout = $this->timeoutForSmallTests;
@@ -778,7 +785,7 @@ final class TestResult implements Countable
         $test->addToAssertionCount(Assert::getCount());
 
         if ($monitorFunctions) {
-            $excludeList = new ExcludeList;
+            $excludeList = new ExcludeList();
 
             /** @noinspection ForgottenDebugOutputInspection */
             $functions = xdebug_get_monitored_functions();
@@ -804,9 +811,11 @@ final class TestResult implements Countable
             }
         }
 
-        if ($this->beStrictAboutTestsThatDoNotTestAnything &&
+        if (
+            $this->beStrictAboutTestsThatDoNotTestAnything &&
             !$test->doesNotPerformAssertions() &&
-            $test->getNumAssertions() === 0) {
+            $test->getNumAssertions() === 0
+        ) {
             $risky = true;
         }
 
@@ -816,10 +825,12 @@ final class TestResult implements Countable
                 $test->getName(false),
             );
 
-            if (!isset($annotations['class']['covers']) &&
+            if (
+                !isset($annotations['class']['covers']) &&
                 !isset($annotations['method']['covers']) &&
                 !isset($annotations['class']['coversNothing']) &&
-                !isset($annotations['method']['coversNothing'])) {
+                !isset($annotations['method']['coversNothing'])
+            ) {
                 $this->addFailure(
                     $test,
                     new MissingCoversAnnotationException(
@@ -895,9 +906,11 @@ final class TestResult implements Countable
                 $unintentionallyCoveredCodeError,
                 $time,
             );
-        } elseif ($this->beStrictAboutTestsThatDoNotTestAnything &&
+        } elseif (
+            $this->beStrictAboutTestsThatDoNotTestAnything &&
             !$test->doesNotPerformAssertions() &&
-            $test->getNumAssertions() === 0) {
+            $test->getNumAssertions() === 0
+        ) {
             try {
                 $reflected = new ReflectionClass($test);
                 // @codeCoverageIgnoreStart
@@ -937,9 +950,11 @@ final class TestResult implements Countable
                 ),
                 $time,
             );
-        } elseif ($this->beStrictAboutTestsThatDoNotTestAnything &&
+        } elseif (
+            $this->beStrictAboutTestsThatDoNotTestAnything &&
             $test->doesNotPerformAssertions() &&
-            $test->getNumAssertions() > 0) {
+            $test->getNumAssertions() > 0
+        ) {
             $this->addFailure(
                 $test,
                 new RiskyTestError(

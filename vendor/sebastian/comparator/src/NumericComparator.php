@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -54,9 +57,11 @@ class NumericComparator extends ScalarComparator
             return;
         }
 
-        if (($this->isInfinite($actual) xor $this->isInfinite($expected)) ||
+        if (
+            ($this->isInfinite($actual) xor $this->isInfinite($expected)) ||
             ($this->isNan($actual) || $this->isNan($expected)) ||
-            abs($actual - $expected) > $delta) {
+            abs($actual - $expected) > $delta
+        ) {
             throw new ComparisonFailure(
                 $expected,
                 $actual,

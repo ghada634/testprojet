@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +14,7 @@ namespace PHPUnit\Util\TestDox;
 
 use function get_class;
 use function in_array;
+
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ErrorTestCase;
 use PHPUnit\Framework\Exception;
@@ -112,7 +116,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->groups        = $groups;
         $this->excludeGroups = $excludeGroups;
 
-        $this->prettifier = new NamePrettifier;
+        $this->prettifier = new NamePrettifier();
         $this->startRun();
     }
 

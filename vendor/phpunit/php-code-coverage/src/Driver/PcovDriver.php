@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -10,6 +13,7 @@
 namespace SebastianBergmann\CodeCoverage\Driver;
 
 use const pcov\inclusive;
+
 use function array_intersect;
 use function extension_loaded;
 use function pcov\clear;
@@ -18,6 +22,7 @@ use function pcov\start;
 use function pcov\stop;
 use function pcov\waiting;
 use function phpversion;
+
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 
@@ -37,7 +42,7 @@ final class PcovDriver extends Driver
     public function __construct(Filter $filter)
     {
         if (!extension_loaded('pcov')) {
-            throw new PcovNotAvailableException;
+            throw new PcovNotAvailableException();
         }
 
         $this->filter = $filter;

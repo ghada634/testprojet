@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\Framework\MockObject\Stub;
 
 use function sprintf;
+
 use PHPUnit\Framework\MockObject\Invocation;
 use SebastianBergmann\Exporter\Exporter;
 use Throwable;
@@ -36,7 +40,7 @@ final class Exception implements Stub
 
     public function toString(): string
     {
-        $exporter = new Exporter;
+        $exporter = new Exporter();
 
         return sprintf(
             'raise user-specified exception %s',

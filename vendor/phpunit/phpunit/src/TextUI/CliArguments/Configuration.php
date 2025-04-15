@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -582,7 +585,7 @@ final class Configuration
     public function argument(): string
     {
         if ($this->argument === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->argument;
@@ -599,7 +602,7 @@ final class Configuration
     public function atLeastVersion(): string
     {
         if ($this->atLeastVersion === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->atLeastVersion;
@@ -616,7 +619,7 @@ final class Configuration
     public function backupGlobals(): bool
     {
         if ($this->backupGlobals === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->backupGlobals;
@@ -633,7 +636,7 @@ final class Configuration
     public function backupStaticAttributes(): bool
     {
         if ($this->backupStaticAttributes === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->backupStaticAttributes;
@@ -650,7 +653,7 @@ final class Configuration
     public function beStrictAboutChangesToGlobalState(): bool
     {
         if ($this->beStrictAboutChangesToGlobalState === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->beStrictAboutChangesToGlobalState;
@@ -667,7 +670,7 @@ final class Configuration
     public function beStrictAboutResourceUsageDuringSmallTests(): bool
     {
         if ($this->beStrictAboutResourceUsageDuringSmallTests === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->beStrictAboutResourceUsageDuringSmallTests;
@@ -684,7 +687,7 @@ final class Configuration
     public function bootstrap(): string
     {
         if ($this->bootstrap === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->bootstrap;
@@ -701,7 +704,7 @@ final class Configuration
     public function cacheResult(): bool
     {
         if ($this->cacheResult === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->cacheResult;
@@ -718,7 +721,7 @@ final class Configuration
     public function cacheResultFile(): string
     {
         if ($this->cacheResultFile === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->cacheResultFile;
@@ -735,7 +738,7 @@ final class Configuration
     public function checkVersion(): bool
     {
         if ($this->checkVersion === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->checkVersion;
@@ -752,7 +755,7 @@ final class Configuration
     public function colors(): string
     {
         if ($this->colors === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->colors;
@@ -769,7 +772,7 @@ final class Configuration
     public function columns()
     {
         if ($this->columns === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->columns;
@@ -786,7 +789,7 @@ final class Configuration
     public function configuration(): string
     {
         if ($this->configuration === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->configuration;
@@ -803,7 +806,7 @@ final class Configuration
     public function coverageFilter(): array
     {
         if ($this->coverageFilter === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->coverageFilter;
@@ -820,7 +823,7 @@ final class Configuration
     public function coverageClover(): string
     {
         if ($this->coverageClover === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->coverageClover;
@@ -837,7 +840,7 @@ final class Configuration
     public function coverageCobertura(): string
     {
         if ($this->coverageCobertura === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->coverageCobertura;
@@ -854,7 +857,7 @@ final class Configuration
     public function coverageCrap4J(): string
     {
         if ($this->coverageCrap4J === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->coverageCrap4J;
@@ -871,7 +874,7 @@ final class Configuration
     public function coverageHtml(): string
     {
         if ($this->coverageHtml === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->coverageHtml;
@@ -888,7 +891,7 @@ final class Configuration
     public function coveragePhp(): string
     {
         if ($this->coveragePhp === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->coveragePhp;
@@ -905,7 +908,7 @@ final class Configuration
     public function coverageText(): string
     {
         if ($this->coverageText === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->coverageText;
@@ -922,7 +925,7 @@ final class Configuration
     public function coverageTextShowUncoveredFiles(): bool
     {
         if ($this->coverageTextShowUncoveredFiles === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->coverageTextShowUncoveredFiles;
@@ -939,7 +942,7 @@ final class Configuration
     public function coverageTextShowOnlySummary(): bool
     {
         if ($this->coverageTextShowOnlySummary === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->coverageTextShowOnlySummary;
@@ -956,7 +959,7 @@ final class Configuration
     public function coverageXml(): string
     {
         if ($this->coverageXml === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->coverageXml;
@@ -973,7 +976,7 @@ final class Configuration
     public function pathCoverage(): bool
     {
         if ($this->pathCoverage === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->pathCoverage;
@@ -990,7 +993,7 @@ final class Configuration
     public function coverageCacheDirectory(): string
     {
         if ($this->coverageCacheDirectory === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->coverageCacheDirectory;
@@ -1007,7 +1010,7 @@ final class Configuration
     public function warmCoverageCache(): bool
     {
         if ($this->warmCoverageCache === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->warmCoverageCache;
@@ -1024,7 +1027,7 @@ final class Configuration
     public function debug(): bool
     {
         if ($this->debug === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->debug;
@@ -1041,7 +1044,7 @@ final class Configuration
     public function defaultTimeLimit(): int
     {
         if ($this->defaultTimeLimit === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->defaultTimeLimit;
@@ -1058,7 +1061,7 @@ final class Configuration
     public function disableCodeCoverageIgnore(): bool
     {
         if ($this->disableCodeCoverageIgnore === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->disableCodeCoverageIgnore;
@@ -1075,7 +1078,7 @@ final class Configuration
     public function disallowTestOutput(): bool
     {
         if ($this->disallowTestOutput === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->disallowTestOutput;
@@ -1092,7 +1095,7 @@ final class Configuration
     public function disallowTodoAnnotatedTests(): bool
     {
         if ($this->disallowTodoAnnotatedTests === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->disallowTodoAnnotatedTests;
@@ -1109,7 +1112,7 @@ final class Configuration
     public function enforceTimeLimit(): bool
     {
         if ($this->enforceTimeLimit === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->enforceTimeLimit;
@@ -1126,7 +1129,7 @@ final class Configuration
     public function excludeGroups(): array
     {
         if ($this->excludeGroups === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->excludeGroups;
@@ -1143,7 +1146,7 @@ final class Configuration
     public function executionOrder(): int
     {
         if ($this->executionOrder === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->executionOrder;
@@ -1160,7 +1163,7 @@ final class Configuration
     public function executionOrderDefects(): int
     {
         if ($this->executionOrderDefects === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->executionOrderDefects;
@@ -1177,7 +1180,7 @@ final class Configuration
     public function failOnEmptyTestSuite(): bool
     {
         if ($this->failOnEmptyTestSuite === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->failOnEmptyTestSuite;
@@ -1194,7 +1197,7 @@ final class Configuration
     public function failOnIncomplete(): bool
     {
         if ($this->failOnIncomplete === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->failOnIncomplete;
@@ -1211,7 +1214,7 @@ final class Configuration
     public function failOnRisky(): bool
     {
         if ($this->failOnRisky === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->failOnRisky;
@@ -1228,7 +1231,7 @@ final class Configuration
     public function failOnSkipped(): bool
     {
         if ($this->failOnSkipped === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->failOnSkipped;
@@ -1245,7 +1248,7 @@ final class Configuration
     public function failOnWarning(): bool
     {
         if ($this->failOnWarning === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->failOnWarning;
@@ -1262,7 +1265,7 @@ final class Configuration
     public function filter(): string
     {
         if ($this->filter === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->filter;
@@ -1279,7 +1282,7 @@ final class Configuration
     public function generateConfiguration(): bool
     {
         if ($this->generateConfiguration === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->generateConfiguration;
@@ -1296,7 +1299,7 @@ final class Configuration
     public function migrateConfiguration(): bool
     {
         if ($this->migrateConfiguration === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->migrateConfiguration;
@@ -1313,7 +1316,7 @@ final class Configuration
     public function groups(): array
     {
         if ($this->groups === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->groups;
@@ -1330,7 +1333,7 @@ final class Configuration
     public function testsCovering(): array
     {
         if ($this->testsCovering === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->testsCovering;
@@ -1347,7 +1350,7 @@ final class Configuration
     public function testsUsing(): array
     {
         if ($this->testsUsing === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->testsUsing;
@@ -1364,7 +1367,7 @@ final class Configuration
     public function help(): bool
     {
         if ($this->help === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->help;
@@ -1381,7 +1384,7 @@ final class Configuration
     public function includePath(): string
     {
         if ($this->includePath === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->includePath;
@@ -1398,7 +1401,7 @@ final class Configuration
     public function iniSettings(): array
     {
         if ($this->iniSettings === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->iniSettings;
@@ -1415,7 +1418,7 @@ final class Configuration
     public function junitLogfile(): string
     {
         if ($this->junitLogfile === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->junitLogfile;
@@ -1432,7 +1435,7 @@ final class Configuration
     public function listGroups(): bool
     {
         if ($this->listGroups === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->listGroups;
@@ -1449,7 +1452,7 @@ final class Configuration
     public function listSuites(): bool
     {
         if ($this->listSuites === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->listSuites;
@@ -1466,7 +1469,7 @@ final class Configuration
     public function listTests(): bool
     {
         if ($this->listTests === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->listTests;
@@ -1483,7 +1486,7 @@ final class Configuration
     public function listTestsXml(): string
     {
         if ($this->listTestsXml === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->listTestsXml;
@@ -1500,7 +1503,7 @@ final class Configuration
     public function loader(): string
     {
         if ($this->loader === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->loader;
@@ -1517,7 +1520,7 @@ final class Configuration
     public function noCoverage(): bool
     {
         if ($this->noCoverage === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->noCoverage;
@@ -1534,7 +1537,7 @@ final class Configuration
     public function noExtensions(): bool
     {
         if ($this->noExtensions === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->noExtensions;
@@ -1551,7 +1554,7 @@ final class Configuration
     public function extensions(): array
     {
         if ($this->extensions === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->extensions;
@@ -1568,7 +1571,7 @@ final class Configuration
     public function unavailableExtensions(): array
     {
         if ($this->unavailableExtensions === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->unavailableExtensions;
@@ -1585,7 +1588,7 @@ final class Configuration
     public function noInteraction(): bool
     {
         if ($this->noInteraction === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->noInteraction;
@@ -1602,7 +1605,7 @@ final class Configuration
     public function noLogging(): bool
     {
         if ($this->noLogging === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->noLogging;
@@ -1619,7 +1622,7 @@ final class Configuration
     public function printer(): string
     {
         if ($this->printer === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->printer;
@@ -1636,7 +1639,7 @@ final class Configuration
     public function processIsolation(): bool
     {
         if ($this->processIsolation === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->processIsolation;
@@ -1653,7 +1656,7 @@ final class Configuration
     public function randomOrderSeed(): int
     {
         if ($this->randomOrderSeed === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->randomOrderSeed;
@@ -1670,7 +1673,7 @@ final class Configuration
     public function repeat(): int
     {
         if ($this->repeat === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->repeat;
@@ -1687,7 +1690,7 @@ final class Configuration
     public function reportUselessTests(): bool
     {
         if ($this->reportUselessTests === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->reportUselessTests;
@@ -1704,7 +1707,7 @@ final class Configuration
     public function resolveDependencies(): bool
     {
         if ($this->resolveDependencies === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->resolveDependencies;
@@ -1721,7 +1724,7 @@ final class Configuration
     public function reverseList(): bool
     {
         if ($this->reverseList === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->reverseList;
@@ -1738,7 +1741,7 @@ final class Configuration
     public function stderr(): bool
     {
         if ($this->stderr === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->stderr;
@@ -1755,7 +1758,7 @@ final class Configuration
     public function strictCoverage(): bool
     {
         if ($this->strictCoverage === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->strictCoverage;
@@ -1772,7 +1775,7 @@ final class Configuration
     public function stopOnDefect(): bool
     {
         if ($this->stopOnDefect === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->stopOnDefect;
@@ -1789,7 +1792,7 @@ final class Configuration
     public function stopOnError(): bool
     {
         if ($this->stopOnError === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->stopOnError;
@@ -1806,7 +1809,7 @@ final class Configuration
     public function stopOnFailure(): bool
     {
         if ($this->stopOnFailure === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->stopOnFailure;
@@ -1823,7 +1826,7 @@ final class Configuration
     public function stopOnIncomplete(): bool
     {
         if ($this->stopOnIncomplete === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->stopOnIncomplete;
@@ -1840,7 +1843,7 @@ final class Configuration
     public function stopOnRisky(): bool
     {
         if ($this->stopOnRisky === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->stopOnRisky;
@@ -1857,7 +1860,7 @@ final class Configuration
     public function stopOnSkipped(): bool
     {
         if ($this->stopOnSkipped === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->stopOnSkipped;
@@ -1874,7 +1877,7 @@ final class Configuration
     public function stopOnWarning(): bool
     {
         if ($this->stopOnWarning === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->stopOnWarning;
@@ -1891,7 +1894,7 @@ final class Configuration
     public function teamcityLogfile(): string
     {
         if ($this->teamcityLogfile === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->teamcityLogfile;
@@ -1908,7 +1911,7 @@ final class Configuration
     public function testdoxExcludeGroups(): array
     {
         if ($this->testdoxExcludeGroups === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->testdoxExcludeGroups;
@@ -1925,7 +1928,7 @@ final class Configuration
     public function testdoxGroups(): array
     {
         if ($this->testdoxGroups === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->testdoxGroups;
@@ -1942,7 +1945,7 @@ final class Configuration
     public function testdoxHtmlFile(): string
     {
         if ($this->testdoxHtmlFile === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->testdoxHtmlFile;
@@ -1959,7 +1962,7 @@ final class Configuration
     public function testdoxTextFile(): string
     {
         if ($this->testdoxTextFile === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->testdoxTextFile;
@@ -1976,7 +1979,7 @@ final class Configuration
     public function testdoxXmlFile(): string
     {
         if ($this->testdoxXmlFile === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->testdoxXmlFile;
@@ -1993,7 +1996,7 @@ final class Configuration
     public function testSuffixes(): array
     {
         if ($this->testSuffixes === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->testSuffixes;
@@ -2010,7 +2013,7 @@ final class Configuration
     public function testSuite(): string
     {
         if ($this->testSuite === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->testSuite;
@@ -2032,7 +2035,7 @@ final class Configuration
     public function unrecognizedOrderBy(): string
     {
         if ($this->unrecognizedOrderBy === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->unrecognizedOrderBy;
@@ -2049,7 +2052,7 @@ final class Configuration
     public function useDefaultConfiguration(): bool
     {
         if ($this->useDefaultConfiguration === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->useDefaultConfiguration;
@@ -2066,7 +2069,7 @@ final class Configuration
     public function verbose(): bool
     {
         if ($this->verbose === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->verbose;
@@ -2083,7 +2086,7 @@ final class Configuration
     public function version(): bool
     {
         if ($this->version === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->version;
@@ -2100,7 +2103,7 @@ final class Configuration
     public function xdebugFilterFile(): string
     {
         if ($this->xdebugFilterFile === null) {
-            throw new Exception;
+            throw new Exception();
         }
 
         return $this->xdebugFilterFile;

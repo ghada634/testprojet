@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -22,8 +25,7 @@ final class RegularExpression
     public static function safeMatch(string $pattern, string $subject)
     {
         return ErrorHandler::invokeIgnoringWarnings(
-            static function () use ($pattern, $subject)
-            {
+            static function () use ($pattern, $subject) {
                 return preg_match($pattern, $subject);
             },
         );

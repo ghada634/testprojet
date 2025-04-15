@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -14,6 +17,7 @@ use function explode;
 use function implode;
 use function is_file;
 use function strpos;
+
 use PharIo\Manifest\ApplicationName;
 use PharIo\Manifest\Exception as ManifestException;
 use PharIo\Manifest\ManifestLoader;
@@ -34,7 +38,7 @@ final class PharLoader
         $loadedExtensions    = [];
         $notLoadedExtensions = [];
 
-        foreach ((new FileIteratorFacade)->getFilesAsArray($directory, '.phar') as $file) {
+        foreach ((new FileIteratorFacade())->getFilesAsArray($directory, '.phar') as $file) {
             if (!is_file('phar://' . $file . '/manifest.xml')) {
                 $notLoadedExtensions[] = $file . ' is not an extension for PHPUnit';
 

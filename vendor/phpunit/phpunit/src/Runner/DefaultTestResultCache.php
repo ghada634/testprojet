@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +14,7 @@ namespace PHPUnit\Runner;
 
 use const DIRECTORY_SEPARATOR;
 use const LOCK_EX;
+
 use function assert;
 use function dirname;
 use function file_get_contents;
@@ -22,6 +26,7 @@ use function is_file;
 use function json_decode;
 use function json_encode;
 use function sprintf;
+
 use PHPUnit\Util\Filesystem;
 
 /**

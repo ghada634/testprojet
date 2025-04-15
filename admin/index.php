@@ -30,20 +30,19 @@
 
     session_start();
 
-    if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
+    if (isset($_SESSION["user"])) {
+        if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'a') {
             header("location: ../login.php");
         }
-
-    }else{
+    } else {
         header("location: ../login.php");
     }
-    
+
 
     //import database
     include("../connection.php");
 
-    
+
     ?>
     <div class="container">
         <div class="menu">
@@ -109,15 +108,15 @@
                                     <?php
                                         echo '<datalist id="doctors">';
                                         $list11 = $database->query("select  docname,docemail from  doctor;");
-        
-                                        for ($y=0;$y<$list11->num_rows;$y++){
-                                            $row00=$list11->fetch_assoc();
-                                            $d=$row00["docname"];
-                                            $c=$row00["docemail"];
-                                            echo "<option value='$d'><br/>";
-                                            echo "<option value='$c'><br/>";
-                                        };
-        
+
+                                    for ($y = 0; $y < $list11->num_rows; $y++) {
+                                        $row00 = $list11->fetch_assoc();
+                                        $d = $row00["docname"];
+                                        $c = $row00["docemail"];
+                                        echo "<option value='$d'><br/>";
+                                        echo "<option value='$c'><br/>";
+                                    };
+
                                     echo ' </datalist>';
                                     ?>
                                     
@@ -132,20 +131,20 @@
                                     Today's Date
                                 </p>
                                 <p class="heading-sub12" style="padding: 0;margin: 0;">
-                                    <?php 
-                                date_default_timezone_set('Asia/Kolkata');
-        
-                                $today = date('Y-m-d');
-                                echo $today;
+                                    <?php
+                                    date_default_timezone_set('Asia/Kolkata');
+
+                                    $today = date('Y-m-d');
+                                    echo $today;
 
 
-                                $patientrow = $database->query("select  * from  patient;");
-                                $doctorrow = $database->query("select  * from  doctor;");
-                                $appointmentrow = $database->query("select  * from  appointment where appodate>='$today';");
-                                $schedulerow = $database->query("select  * from  schedule where scheduledate='$today';");
+                                    $patientrow = $database->query("select  * from  patient;");
+                                    $doctorrow = $database->query("select  * from  doctor;");
+                                    $appointmentrow = $database->query("select  * from  appointment where appodate>='$today';");
+                                    $schedulerow = $database->query("select  * from  schedule where scheduledate='$today';");
 
 
-                                ?>
+                                    ?>
                                 </p>
                             </td>
                             <td width="10%">
@@ -235,8 +234,8 @@
                             <tr>
                                 <td>
                                     <p style="padding:10px;padding-left:48px;padding-bottom:0;font-size:23px;font-weight:700;color:var(--primarycolor);">
-                                        Upcoming Appointments until Next <?php  
-                                        echo date("l",strtotime("+1 week"));
+                                        Upcoming Appointments until Next <?php
+                                        echo date("l", strtotime("+1 week"));
                                         ?>
                                     </p>
                                     <p style="padding-bottom:19px;padding-left:50px;font-size:15px;font-weight:500;color:#212529e3;line-height: 20px;">
@@ -247,8 +246,8 @@
                                 </td>
                                 <td>
                                     <p style="text-align:right;padding:10px;padding-right:48px;padding-bottom:0;font-size:23px;font-weight:700;color:var(--primarycolor);">
-                                        Upcoming Sessions  until Next <?php  
-                                        echo date("l",strtotime("+1 week"));
+                                        Upcoming Sessions  until Next <?php
+                                        echo date("l", strtotime("+1 week"));
                                         ?>
                                     </p>
                                     <p style="padding-bottom:19px;text-align:right;padding-right:50px;font-size:15px;font-weight:500;color:#212529e3;line-height: 20px;">
@@ -289,13 +288,13 @@
                                         <tbody>
                                         
                                             <?php
-                                            $nextweek=date("Y-m-d",strtotime("+1 week"));
-                                            $sqlmain= "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  where schedule.scheduledate>='$today'  and schedule.scheduledate<='$nextweek' order by schedule.scheduledate desc";
+                                            $nextweek = date("Y-m-d", strtotime("+1 week"));
+                                            $sqlmain = "select appointment.appoid,schedule.scheduleid,schedule.title,doctor.docname,patient.pname,schedule.scheduledate,schedule.scheduletime,appointment.apponum,appointment.appodate from schedule inner join appointment on schedule.scheduleid=appointment.scheduleid inner join patient on patient.pid=appointment.pid inner join doctor on schedule.docid=doctor.docid  where schedule.scheduledate>='$today'  and schedule.scheduledate<='$nextweek' order by schedule.scheduledate desc";
 
-                                                $result= $database->query($sqlmain);
-                
-                                                if($result->num_rows==0){
-                                                    echo '<tr>
+                                                $result = $database->query($sqlmain);
+
+                                            if ($result->num_rows == 0) {
+                                                echo '<tr>
                                                     <td colspan="3">
                                                     <br><br><br><br>
                                                     <center>
@@ -309,47 +308,44 @@
                                                     <br><br><br><br>
                                                     </td>
                                                     </tr>';
-                                                    
-                                                }
-                                                else{
-                                                for ( $x=0; $x<$result->num_rows;$x++){
-                                                    $row=$result->fetch_assoc();
-                                                    $appoid=$row["appoid"];
-                                                    $scheduleid=$row["scheduleid"];
-                                                    $title=$row["title"];
-                                                    $docname=$row["docname"];
-                                                    $scheduledate=$row["scheduledate"];
-                                                    $scheduletime=$row["scheduletime"];
-                                                    $pname=$row["pname"];
-                                                    $apponum=$row["apponum"];
-                                                    $appodate=$row["appodate"];
+                                            } else {
+                                                for ($x = 0; $x < $result->num_rows; $x++) {
+                                                    $row = $result->fetch_assoc();
+                                                    $appoid = $row["appoid"];
+                                                    $scheduleid = $row["scheduleid"];
+                                                    $title = $row["title"];
+                                                    $docname = $row["docname"];
+                                                    $scheduledate = $row["scheduledate"];
+                                                    $scheduletime = $row["scheduletime"];
+                                                    $pname = $row["pname"];
+                                                    $apponum = $row["apponum"];
+                                                    $appodate = $row["appodate"];
                                                     echo '<tr>
 
 
                                                         <td style="text-align:center;font-size:23px;font-weight:500; color: var(--btnnicetext);padding:20px;">
-                                                            '.$apponum.'
+                                                            ' . $apponum . '
                                                             
                                                         </td>
 
-                                                        <td style="font-weight:600;"> &nbsp;'.
-                                                        
-                                                        substr($pname,0,25)
-                                                        .'</td >
-                                                        <td style="font-weight:600;"> &nbsp;'.
-                                                        
-                                                            substr($docname,0,25)
-                                                            .'</td >
+                                                        <td style="font-weight:600;"> &nbsp;' .
+
+                                                        substr($pname, 0, 25)
+                                                        . '</td >
+                                                        <td style="font-weight:600;"> &nbsp;' .
+
+                                                            substr($docname, 0, 25)
+                                                            . '</td >
                                                            
                                                         
                                                         <td>
-                                                        '.substr($title,0,15).'
+                                                        ' . substr($title, 0, 15) . '
                                                         </td>
 
                                                     </tr>';
-                                                    
                                                 }
                                             }
-                                                 
+
                                             ?>
                  
                                             </tbody>
@@ -385,12 +381,12 @@
                                         <tbody>
                                         
                                             <?php
-                                            $nextweek=date("Y-m-d",strtotime("+1 week"));
-                                            $sqlmain= "select schedule.scheduleid,schedule.title,doctor.docname,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join doctor on schedule.docid=doctor.docid  where schedule.scheduledate>='$today' and schedule.scheduledate<='$nextweek' order by schedule.scheduledate desc"; 
-                                                $result= $database->query($sqlmain);
-                
-                                                if($result->num_rows==0){
-                                                    echo '<tr>
+                                            $nextweek = date("Y-m-d", strtotime("+1 week"));
+                                            $sqlmain = "select schedule.scheduleid,schedule.title,doctor.docname,schedule.scheduledate,schedule.scheduletime,schedule.nop from schedule inner join doctor on schedule.docid=doctor.docid  where schedule.scheduledate>='$today' and schedule.scheduledate<='$nextweek' order by schedule.scheduledate desc";
+                                                $result = $database->query($sqlmain);
+
+                                            if ($result->num_rows == 0) {
+                                                echo '<tr>
                                                     <td colspan="4">
                                                     <br><br><br><br>
                                                     <center>
@@ -404,35 +400,32 @@
                                                     <br><br><br><br>
                                                     </td>
                                                     </tr>';
-                                                    
-                                                }
-                                                else{
-                                                for ( $x=0; $x<$result->num_rows;$x++){
-                                                    $row=$result->fetch_assoc();
-                                                    $scheduleid=$row["scheduleid"];
-                                                    $title=$row["title"];
-                                                    $docname=$row["docname"];
-                                                    $scheduledate=$row["scheduledate"];
-                                                    $scheduletime=$row["scheduletime"];
-                                                    $nop=$row["nop"];
+                                            } else {
+                                                for ($x = 0; $x < $result->num_rows; $x++) {
+                                                    $row = $result->fetch_assoc();
+                                                    $scheduleid = $row["scheduleid"];
+                                                    $title = $row["title"];
+                                                    $docname = $row["docname"];
+                                                    $scheduledate = $row["scheduledate"];
+                                                    $scheduletime = $row["scheduletime"];
+                                                    $nop = $row["nop"];
                                                     echo '<tr>
-                                                        <td style="padding:20px;"> &nbsp;'.
-                                                        substr($title,0,30)
-                                                        .'</td>
+                                                        <td style="padding:20px;"> &nbsp;' .
+                                                        substr($title, 0, 30)
+                                                        . '</td>
                                                         <td>
-                                                        '.substr($docname,0,20).'
+                                                        ' . substr($docname, 0, 20) . '
                                                         </td>
                                                         <td style="text-align:center;">
-                                                            '.substr($scheduledate,0,10).' '.substr($scheduletime,0,5).'
+                                                            ' . substr($scheduledate, 0, 10) . ' ' . substr($scheduletime, 0, 5) . '
                                                         </td>
 
                 
                                                        
                                                     </tr>';
-                                                    
                                                 }
                                             }
-                                                 
+
                                             ?>
                  
                                             </tbody>

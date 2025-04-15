@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +14,7 @@ namespace PHPUnit\Framework;
 
 use function func_get_args;
 use function function_exists;
+
 use ArrayAccess;
 use Countable;
 use DOMDocument;
@@ -2942,7 +2946,7 @@ if (!function_exists('PHPUnit\Framework\any')) {
      */
     function any(): AnyInvokedCountMatcher
     {
-        return new AnyInvokedCountMatcher;
+        return new AnyInvokedCountMatcher();
     }
 }
 
@@ -2975,7 +2979,7 @@ if (!function_exists('PHPUnit\Framework\atLeastOnce')) {
      */
     function atLeastOnce(): InvokedAtLeastOnceMatcher
     {
-        return new InvokedAtLeastOnceMatcher;
+        return new InvokedAtLeastOnceMatcher();
     }
 }
 
@@ -3058,7 +3062,7 @@ if (!function_exists('PHPUnit\Framework\returnSelf')) {
      */
     function returnSelf(): ReturnSelfStub
     {
-        return new ReturnSelfStub;
+        return new ReturnSelfStub();
     }
 }
 

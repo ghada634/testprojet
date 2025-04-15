@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -15,6 +18,7 @@ use function class_exists;
 use function explode;
 use function is_numeric;
 use function str_replace;
+
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
@@ -126,7 +130,7 @@ final class Builder
     public function fromParameters(array $parameters, array $additionalLongOptions): Configuration
     {
         try {
-            $options = (new CliParser)->parse(
+            $options = (new CliParser())->parse(
                 $parameters,
                 self::SHORT_OPTIONS,
                 array_merge(self::LONG_OPTIONS, $additionalLongOptions),

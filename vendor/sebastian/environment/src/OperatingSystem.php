@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/environment.
  *
@@ -12,6 +15,7 @@ namespace SebastianBergmann\Environment;
 use const DIRECTORY_SEPARATOR;
 use const PHP_OS;
 use const PHP_OS_FAMILY;
+
 use function defined;
 
 final class OperatingSystem

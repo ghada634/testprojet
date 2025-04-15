@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
+
 use function array_diff;
 use function array_keys;
 use function fopen;
@@ -38,9 +42,11 @@ final class FileLoader
 
         $localFile = __DIR__ . DIRECTORY_SEPARATOR . $filename;
 
-        if (!$includePathFilename ||
+        if (
+            !$includePathFilename ||
             $includePathFilename === $localFile ||
-            !self::isReadable($includePathFilename)) {
+            !self::isReadable($includePathFilename)
+        ) {
             throw new Exception(
                 sprintf('Cannot open file "%s".' . "\n", $filename),
             );

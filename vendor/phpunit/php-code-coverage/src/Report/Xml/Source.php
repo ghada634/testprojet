@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -31,7 +34,7 @@ final class Source
     {
         $context = $this->context;
 
-        $tokens = (new Tokenizer)->parse($source);
+        $tokens = (new Tokenizer())->parse($source);
         $srcDom = (new XMLSerializer(new NamespaceUri($context->namespaceURI)))->toDom($tokens);
 
         $context->parentNode->replaceChild(

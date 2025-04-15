@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -10,6 +13,7 @@
 namespace SebastianBergmann\CodeCoverage\Driver;
 
 use function sprintf;
+
 use SebastianBergmann\CodeCoverage\BranchAndPathCoverageNotSupportedException;
 use SebastianBergmann\CodeCoverage\DeadCodeDetectionNotSupportedException;
 use SebastianBergmann\CodeCoverage\Filter;
@@ -79,7 +83,7 @@ abstract class Driver
      */
     public static function forLineCoverage(Filter $filter): self
     {
-        return (new Selector)->forLineCoverage($filter);
+        return (new Selector())->forLineCoverage($filter);
     }
 
     /**
@@ -92,7 +96,7 @@ abstract class Driver
      */
     public static function forLineAndPathCoverage(Filter $filter): self
     {
-        return (new Selector)->forLineAndPathCoverage($filter);
+        return (new Selector())->forLineAndPathCoverage($filter);
     }
 
     public function canCollectBranchAndPathCoverage(): bool

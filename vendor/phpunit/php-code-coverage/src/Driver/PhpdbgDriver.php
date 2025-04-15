@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -11,6 +14,7 @@ namespace SebastianBergmann\CodeCoverage\Driver;
 
 use const PHP_SAPI;
 use const PHP_VERSION;
+
 use function array_diff;
 use function array_keys;
 use function array_merge;
@@ -18,6 +22,7 @@ use function get_included_files;
 use function phpdbg_end_oplog;
 use function phpdbg_get_executable;
 use function phpdbg_start_oplog;
+
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 
 /**
@@ -31,7 +36,7 @@ final class PhpdbgDriver extends Driver
     public function __construct()
     {
         if (PHP_SAPI !== 'phpdbg') {
-            throw new PhpdbgNotAvailableException;
+            throw new PhpdbgNotAvailableException();
         }
     }
 

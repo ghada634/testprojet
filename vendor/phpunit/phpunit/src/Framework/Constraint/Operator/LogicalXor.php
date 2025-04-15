@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -53,8 +56,7 @@ final class LogicalXor extends BinaryOperator
 
         return array_reduce(
             $constraints,
-            static function (bool $matches, Constraint $constraint) use ($other): bool
-            {
+            static function (bool $matches, Constraint $constraint) use ($other): bool {
                 return $matches xor $constraint->evaluate($other, '', true);
             },
             $initial->evaluate($other, '', true),

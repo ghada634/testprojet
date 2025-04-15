@@ -1,5 +1,8 @@
 #!/usr/bin/env php
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 if ($argc !== 2) {
     print $argv[0] . ' <tag>' . PHP_EOL;
 

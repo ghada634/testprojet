@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of phpunit/php-code-coverage.
  *
@@ -15,6 +18,7 @@ use const XDEBUG_CC_UNUSED;
 use const XDEBUG_FILTER_CODE_COVERAGE;
 use const XDEBUG_PATH_INCLUDE;
 use const XDEBUG_PATH_WHITELIST;
+
 use function defined;
 use function extension_loaded;
 use function ini_get;
@@ -25,6 +29,7 @@ use function xdebug_get_code_coverage;
 use function xdebug_set_filter;
 use function xdebug_start_code_coverage;
 use function xdebug_stop_code_coverage;
+
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 
@@ -46,7 +51,7 @@ final class Xdebug2Driver extends Driver
     public function __construct(Filter $filter)
     {
         if (!extension_loaded('xdebug')) {
-            throw new XdebugNotAvailableException;
+            throw new XdebugNotAvailableException();
         }
 
         if (version_compare(phpversion('xdebug'), '3', '>=')) {
@@ -59,7 +64,7 @@ final class Xdebug2Driver extends Driver
         }
 
         if (!ini_get('xdebug.coverage_enable')) {
-            throw new Xdebug2NotEnabledException;
+            throw new Xdebug2NotEnabledException();
         }
 
         if (!$filter->isEmpty()) {

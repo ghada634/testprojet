@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +14,7 @@ namespace PHPUnit\Runner;
 
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const DIRECTORY_SEPARATOR;
+
 use function array_merge;
 use function basename;
 use function debug_backtrace;
@@ -42,6 +46,7 @@ use function unlink;
 use function unserialize;
 use function var_export;
 use function version_compare;
+
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExecutionOrderDependency;
@@ -121,7 +126,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     public function run(?TestResult $result = null): TestResult
     {
         if ($result === null) {
-            $result = new TestResult;
+            $result = new TestResult();
         }
 
         try {
@@ -190,7 +195,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $this->renderForCoverage($code, $pathCoverage, $codeCoverageCacheDirectory);
         }
 
-        $timer = new Timer;
+        $timer = new Timer();
         $timer->start();
 
         $jobResult    = $this->phpUtil->runJob($code, $this->stringifyIni($settings));
@@ -516,8 +521,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             if (isset($sections[$section . '_EXTERNAL'])) {
                 $externalFilename = trim($sections[$section . '_EXTERNAL']);
 
-                if (!is_file($testDirectory . $externalFilename) ||
-                    !is_readable($testDirectory . $externalFilename)) {
+                if (
+                    !is_file($testDirectory . $externalFilename) ||
+                    !is_readable($testDirectory . $externalFilename)
+                ) {
                     throw new Exception(
                         sprintf(
                             'Could not load --%s-- %s for PHPT file',

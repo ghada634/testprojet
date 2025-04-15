@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function sprintf;
+
 use PHPUnit\Util\Xml\Exception as XmlException;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaDetector;
@@ -27,7 +31,7 @@ final class Migrator
      */
     public function migrate(string $filename): string
     {
-        $origin = (new SchemaDetector)->detect($filename);
+        $origin = (new SchemaDetector())->detect($filename);
 
         if (!$origin->detected()) {
             throw new Exception(
@@ -38,14 +42,14 @@ final class Migrator
             );
         }
 
-        $configurationDocument = (new XmlLoader)->loadFile(
+        $configurationDocument = (new XmlLoader())->loadFile(
             $filename,
             false,
             true,
             true,
         );
 
-        foreach ((new MigrationBuilder)->build($origin->version()) as $migration) {
+        foreach ((new MigrationBuilder())->build($origin->version()) as $migration) {
             $migration->migrate($configurationDocument);
         }
 

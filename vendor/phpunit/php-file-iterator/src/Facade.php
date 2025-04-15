@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of phpunit/php-file-iterator.
  *
@@ -10,6 +13,7 @@
 namespace SebastianBergmann\FileIterator;
 
 use const DIRECTORY_SEPARATOR;
+
 use function array_unique;
 use function count;
 use function dirname;
@@ -32,7 +36,7 @@ class Facade
             $paths = [$paths];
         }
 
-        $iterator = (new Factory)->getFileIterator($paths, $suffixes, $prefixes, $exclude);
+        $iterator = (new Factory())->getFileIterator($paths, $suffixes, $prefixes, $exclude);
 
         $files = [];
 

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -28,7 +31,7 @@ final class Blacklist
      */
     public function getBlacklistedDirectories(): array
     {
-        return (new ExcludeList)->getExcludedDirectories();
+        return (new ExcludeList())->getExcludedDirectories();
     }
 
     /**
@@ -36,6 +39,6 @@ final class Blacklist
      */
     public function isBlacklisted(string $file): bool
     {
-        return (new ExcludeList)->isExcluded($file);
+        return (new ExcludeList())->isExcluded($file);
     }
 }

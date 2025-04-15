@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/comparator.
  *
@@ -28,7 +31,7 @@ abstract class Comparator
 
     public function __construct()
     {
-        $this->exporter = new Exporter;
+        $this->exporter = new Exporter();
     }
 
     public function setFactory(Factory $factory)/*: void*/

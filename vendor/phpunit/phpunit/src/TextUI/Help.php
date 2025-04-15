@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
+
 use function count;
 use function defined;
 use function explode;
@@ -19,6 +23,7 @@ use function str_pad;
 use function str_repeat;
 use function strlen;
 use function wordwrap;
+
 use PHPUnit\Util\Color;
 use SebastianBergmann\Environment\Console;
 
@@ -47,11 +52,11 @@ final class Help
     public function __construct(?int $width = null, ?bool $withColor = null)
     {
         if ($width === null) {
-            $width = (new Console)->getNumberOfColumns();
+            $width = (new Console())->getNumberOfColumns();
         }
 
         if ($withColor === null) {
-            $this->hasColor = (new Console)->hasColorSupport();
+            $this->hasColor = (new Console())->hasColorSupport();
         } else {
             $this->hasColor = $withColor;
         }
@@ -125,8 +130,7 @@ final class Help
                     $arg = Color::colorize('fg-green', str_pad($option['arg'], $this->maxArgLength));
                     $arg = preg_replace_callback(
                         '/(<[^>]+>)/',
-                        static function ($matches)
-                        {
+                        static function ($matches) {
                             return Color::colorize('fg-cyan', $matches[0]);
                         },
                         $arg,

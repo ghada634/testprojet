@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -12,6 +15,7 @@ namespace PHPUnit\Runner;
 use function is_dir;
 use function is_file;
 use function substr;
+
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use ReflectionClass;
@@ -73,7 +77,7 @@ abstract class BaseTestRunner
      */
     public function getLoader(): TestSuiteLoader
     {
-        return new StandardTestSuiteLoader;
+        return new StandardTestSuiteLoader();
     }
 
     /**
@@ -89,7 +93,7 @@ abstract class BaseTestRunner
     {
         if (is_dir($suiteClassFile)) {
             /** @var string[] $files */
-            $files = (new FileIteratorFacade)->getFilesAsArray(
+            $files = (new FileIteratorFacade())->getFilesAsArray(
                 $suiteClassFile,
                 $suffixes,
             );
@@ -101,7 +105,7 @@ abstract class BaseTestRunner
         }
 
         if (is_file($suiteClassFile) && substr($suiteClassFile, -5, 5) === '.phpt') {
-            $suite = new TestSuite;
+            $suite = new TestSuite();
             $suite->addTestFile($suiteClassFile);
 
             return $suite;

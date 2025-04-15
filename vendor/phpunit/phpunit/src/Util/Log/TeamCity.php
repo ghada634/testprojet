@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\Util\Log;
 
 use const PHP_EOL;
+
 use function class_exists;
 use function count;
 use function explode;
@@ -23,6 +27,7 @@ use function print_r;
 use function round;
 use function str_replace;
 use function stripos;
+
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;

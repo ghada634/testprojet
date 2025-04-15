@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -55,8 +58,7 @@ final class LogicalNot extends UnaryOperator
         }
 
         $positives = array_map(
-            static function (string $s)
-            {
+            static function (string $s) {
                 return '/\\b' . preg_quote($s, '/') . '/';
             },
             $positives,

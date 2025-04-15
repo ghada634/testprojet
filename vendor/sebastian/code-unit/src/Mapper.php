@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/code-unit.
  *
@@ -24,6 +27,7 @@ use function sprintf;
 use function str_replace;
 use function strpos;
 use function trait_exists;
+
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;

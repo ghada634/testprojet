@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +14,7 @@ namespace PHPUnit\Framework;
 
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const PHP_EOL;
+
 use function array_shift;
 use function array_unshift;
 use function assert;
@@ -32,6 +36,7 @@ use function preg_match;
 use function preg_split;
 use function sprintf;
 use function strpos;
+
 use ArrayAccess;
 use Countable;
 use DOMAttr;
@@ -753,7 +758,7 @@ abstract class Assert
      */
     public static function assertIsReadable(string $filename, string $message = ''): void
     {
-        static::assertThat($filename, new IsReadable, $message);
+        static::assertThat($filename, new IsReadable(), $message);
     }
 
     /**
@@ -764,7 +769,7 @@ abstract class Assert
      */
     public static function assertIsNotReadable(string $filename, string $message = ''): void
     {
-        static::assertThat($filename, new LogicalNot(new IsReadable), $message);
+        static::assertThat($filename, new LogicalNot(new IsReadable()), $message);
     }
 
     /**
@@ -781,7 +786,7 @@ abstract class Assert
     {
         self::createWarning('assertNotIsReadable() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertIsNotReadable() instead.');
 
-        static::assertThat($filename, new LogicalNot(new IsReadable), $message);
+        static::assertThat($filename, new LogicalNot(new IsReadable()), $message);
     }
 
     /**
@@ -792,7 +797,7 @@ abstract class Assert
      */
     public static function assertIsWritable(string $filename, string $message = ''): void
     {
-        static::assertThat($filename, new IsWritable, $message);
+        static::assertThat($filename, new IsWritable(), $message);
     }
 
     /**
@@ -803,7 +808,7 @@ abstract class Assert
      */
     public static function assertIsNotWritable(string $filename, string $message = ''): void
     {
-        static::assertThat($filename, new LogicalNot(new IsWritable), $message);
+        static::assertThat($filename, new LogicalNot(new IsWritable()), $message);
     }
 
     /**
@@ -820,7 +825,7 @@ abstract class Assert
     {
         self::createWarning('assertNotIsWritable() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertIsNotWritable() instead.');
 
-        static::assertThat($filename, new LogicalNot(new IsWritable), $message);
+        static::assertThat($filename, new LogicalNot(new IsWritable()), $message);
     }
 
     /**
@@ -831,7 +836,7 @@ abstract class Assert
      */
     public static function assertDirectoryExists(string $directory, string $message = ''): void
     {
-        static::assertThat($directory, new DirectoryExists, $message);
+        static::assertThat($directory, new DirectoryExists(), $message);
     }
 
     /**
@@ -842,7 +847,7 @@ abstract class Assert
      */
     public static function assertDirectoryDoesNotExist(string $directory, string $message = ''): void
     {
-        static::assertThat($directory, new LogicalNot(new DirectoryExists), $message);
+        static::assertThat($directory, new LogicalNot(new DirectoryExists()), $message);
     }
 
     /**
@@ -859,7 +864,7 @@ abstract class Assert
     {
         self::createWarning('assertDirectoryNotExists() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertDirectoryDoesNotExist() instead.');
 
-        static::assertThat($directory, new LogicalNot(new DirectoryExists), $message);
+        static::assertThat($directory, new LogicalNot(new DirectoryExists()), $message);
     }
 
     /**
@@ -954,7 +959,7 @@ abstract class Assert
      */
     public static function assertFileExists(string $filename, string $message = ''): void
     {
-        static::assertThat($filename, new FileExists, $message);
+        static::assertThat($filename, new FileExists(), $message);
     }
 
     /**
@@ -965,7 +970,7 @@ abstract class Assert
      */
     public static function assertFileDoesNotExist(string $filename, string $message = ''): void
     {
-        static::assertThat($filename, new LogicalNot(new FileExists), $message);
+        static::assertThat($filename, new LogicalNot(new FileExists()), $message);
     }
 
     /**
@@ -982,7 +987,7 @@ abstract class Assert
     {
         self::createWarning('assertFileNotExists() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertFileDoesNotExist() instead.');
 
-        static::assertThat($filename, new LogicalNot(new FileExists), $message);
+        static::assertThat($filename, new LogicalNot(new FileExists()), $message);
     }
 
     /**
@@ -2214,8 +2219,8 @@ abstract class Assert
      */
     public static function assertXmlFileEqualsXmlFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
-        $expected = (new XmlLoader)->loadFile($expectedFile);
-        $actual   = (new XmlLoader)->loadFile($actualFile);
+        $expected = (new XmlLoader())->loadFile($expectedFile);
+        $actual   = (new XmlLoader())->loadFile($actualFile);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2229,8 +2234,8 @@ abstract class Assert
      */
     public static function assertXmlFileNotEqualsXmlFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
-        $expected = (new XmlLoader)->loadFile($expectedFile);
-        $actual   = (new XmlLoader)->loadFile($actualFile);
+        $expected = (new XmlLoader())->loadFile($expectedFile);
+        $actual   = (new XmlLoader())->loadFile($actualFile);
 
         static::assertNotEquals($expected, $actual, $message);
     }
@@ -2251,10 +2256,10 @@ abstract class Assert
 
             $actual = $actualXml;
         } else {
-            $actual = (new XmlLoader)->load($actualXml);
+            $actual = (new XmlLoader())->load($actualXml);
         }
 
-        $expected = (new XmlLoader)->loadFile($expectedFile);
+        $expected = (new XmlLoader())->loadFile($expectedFile);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2275,10 +2280,10 @@ abstract class Assert
 
             $actual = $actualXml;
         } else {
-            $actual = (new XmlLoader)->load($actualXml);
+            $actual = (new XmlLoader())->load($actualXml);
         }
 
-        $expected = (new XmlLoader)->loadFile($expectedFile);
+        $expected = (new XmlLoader())->loadFile($expectedFile);
 
         static::assertNotEquals($expected, $actual, $message);
     }
@@ -2300,7 +2305,7 @@ abstract class Assert
 
             $expected = $expectedXml;
         } else {
-            $expected = (new XmlLoader)->load($expectedXml);
+            $expected = (new XmlLoader())->load($expectedXml);
         }
 
         if (!is_string($actualXml)) {
@@ -2308,7 +2313,7 @@ abstract class Assert
 
             $actual = $actualXml;
         } else {
-            $actual = (new XmlLoader)->load($actualXml);
+            $actual = (new XmlLoader())->load($actualXml);
         }
 
         static::assertEquals($expected, $actual, $message);
@@ -2331,7 +2336,7 @@ abstract class Assert
 
             $expected = $expectedXml;
         } else {
-            $expected = (new XmlLoader)->load($expectedXml);
+            $expected = (new XmlLoader())->load($expectedXml);
         }
 
         if (!is_string($actualXml)) {
@@ -2339,7 +2344,7 @@ abstract class Assert
 
             $actual = $actualXml;
         } else {
-            $actual = (new XmlLoader)->load($actualXml);
+            $actual = (new XmlLoader())->load($actualXml);
         }
 
         static::assertNotEquals($expected, $actual, $message);
@@ -2587,7 +2592,7 @@ abstract class Assert
     {
         $constraints = func_get_args();
 
-        $constraint = new LogicalAnd;
+        $constraint = new LogicalAnd();
         $constraint->setConstraints($constraints);
 
         return $constraint;
@@ -2597,7 +2602,7 @@ abstract class Assert
     {
         $constraints = func_get_args();
 
-        $constraint = new LogicalOr;
+        $constraint = new LogicalOr();
         $constraint->setConstraints($constraints);
 
         return $constraint;
@@ -2612,7 +2617,7 @@ abstract class Assert
     {
         $constraints = func_get_args();
 
-        $constraint = new LogicalXor;
+        $constraint = new LogicalXor();
         $constraint->setConstraints($constraints);
 
         return $constraint;
@@ -2620,12 +2625,12 @@ abstract class Assert
 
     public static function anything(): IsAnything
     {
-        return new IsAnything;
+        return new IsAnything();
     }
 
     public static function isTrue(): IsTrue
     {
-        return new IsTrue;
+        return new IsTrue();
     }
 
     /**
@@ -2642,32 +2647,32 @@ abstract class Assert
 
     public static function isFalse(): IsFalse
     {
-        return new IsFalse;
+        return new IsFalse();
     }
 
     public static function isJson(): IsJson
     {
-        return new IsJson;
+        return new IsJson();
     }
 
     public static function isNull(): IsNull
     {
-        return new IsNull;
+        return new IsNull();
     }
 
     public static function isFinite(): IsFinite
     {
-        return new IsFinite;
+        return new IsFinite();
     }
 
     public static function isInfinite(): IsInfinite
     {
-        return new IsInfinite;
+        return new IsInfinite();
     }
 
     public static function isNan(): IsNan
     {
-        return new IsNan;
+        return new IsNan();
     }
 
     public static function containsEqual($value): TraversableContainsEqual
@@ -2720,27 +2725,27 @@ abstract class Assert
 
     public static function isEmpty(): IsEmpty
     {
-        return new IsEmpty;
+        return new IsEmpty();
     }
 
     public static function isWritable(): IsWritable
     {
-        return new IsWritable;
+        return new IsWritable();
     }
 
     public static function isReadable(): IsReadable
     {
-        return new IsReadable;
+        return new IsReadable();
     }
 
     public static function directoryExists(): DirectoryExists
     {
-        return new DirectoryExists;
+        return new DirectoryExists();
     }
 
     public static function fileExists(): FileExists
     {
-        return new FileExists;
+        return new FileExists();
     }
 
     public static function greaterThan($value): GreaterThan

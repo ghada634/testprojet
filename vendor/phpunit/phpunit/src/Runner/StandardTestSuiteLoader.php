@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -18,6 +21,7 @@ use function sprintf;
 use function stripos;
 use function strlen;
 use function substr;
+
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\FileLoader;
 use ReflectionClass;
@@ -62,8 +66,10 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
 
             foreach ($loadedClasses as $loadedClass) {
                 // @see https://github.com/sebastianbergmann/phpunit/issues/5020
-                if (stripos(substr($loadedClass, $offset - 1), '\\' . $suiteClassName) === 0 ||
-                    stripos(substr($loadedClass, $offset - 1), '_' . $suiteClassName) === 0) {
+                if (
+                    stripos(substr($loadedClass, $offset - 1), '\\' . $suiteClassName) === 0 ||
+                    stripos(substr($loadedClass, $offset - 1), '_' . $suiteClassName) === 0
+                ) {
                     $suiteClassName = $loadedClass;
 
                     break;

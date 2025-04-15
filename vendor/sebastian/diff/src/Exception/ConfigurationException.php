@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/diff.
  *
@@ -13,6 +16,7 @@ use function get_class;
 use function gettype;
 use function is_object;
 use function sprintf;
+
 use Exception;
 
 final class ConfigurationException extends InvalidArgumentException

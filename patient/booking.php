@@ -25,35 +25,34 @@
 
     session_start();
 
-    if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='p'){
+    if (isset($_SESSION["user"])) {
+        if (($_SESSION["user"]) == "" or $_SESSION['usertype'] != 'p') {
             header("location: ../login.php");
-        }else{
-            $useremail=$_SESSION["user"];
+        } else {
+            $useremail = $_SESSION["user"];
         }
-
-    }else{
+    } else {
         header("location: ../login.php");
     }
-    
+
 
     //import database
     include("../connection.php");
 
-    $sqlmain= "select * from patient where pemail=?";
+    $sqlmain = "select * from patient where pemail=?";
     $stmt = $database->prepare($sqlmain);
-    $stmt->bind_param("s",$useremail);
+    $stmt->bind_param("s", $useremail);
     $stmt->execute();
     $result = $stmt->get_result();
     // old : $userfetch=$userrow->fetch_assoc();
     $userfetch = $result->fetch_assoc();
-    $userid= $userfetch["pid"];
-    $username=$userfetch["pname"];
+    $userid = $userfetch["pid"];
+    $username = $userfetch["pname"];
 
 
     //echo $userid;
     //echo $username;
-    
+
 
 
     date_default_timezone_set('Asia/Kolkata');
@@ -62,7 +61,7 @@
 
 
  //echo $userid;
- ?>
+    ?>
  <div class="container">
      <div class="menu">
      <table class="menu-container" border="0">
@@ -74,8 +73,8 @@
                                  <img src="../img/user.png" alt="" width="100%" style="border-radius:50%">
                              </td>
                              <td style="padding:0px;margin:0px;">
-                                 <p class="profile-title"><?php echo substr($username,0,13)  ?>..</p>
-                                 <p class="profile-subtitle"><?php echo substr($useremail,0,22)  ?></p>
+                                 <p class="profile-title"><?php echo substr($username, 0, 13)  ?>..</p>
+                                 <p class="profile-subtitle"><?php echo substr($useremail, 0, 22)  ?></p>
                              </td>
                          </tr>
                          <tr>
@@ -131,29 +130,28 @@
                                             echo '<datalist id="doctors">';
                                             $list11 = $database->query("select DISTINCT * from  doctor;");
                                             $list12 = $database->query("select DISTINCT * from  schedule GROUP BY title;");
-                                            
-
-                                            
 
 
-                                            for ($y=0;$y<$list11->num_rows;$y++){
-                                                $row00=$list11->fetch_assoc();
-                                                $d=$row00["docname"];
-                                               
-                                                echo "<option value='$d'><br/>";
-                                               
-                                            };
 
 
-                                            for ($y=0;$y<$list12->num_rows;$y++){
-                                                $row00=$list12->fetch_assoc();
-                                                $d=$row00["title"];
-                                               
-                                                echo "<option value='$d'><br/>";
-                                                                                         };
+
+                                        for ($y = 0; $y < $list11->num_rows; $y++) {
+                                            $row00 = $list11->fetch_assoc();
+                                            $d = $row00["docname"];
+
+                                            echo "<option value='$d'><br/>";
+                                        };
+
+
+                                        for ($y = 0; $y < $list12->num_rows; $y++) {
+                                            $row00 = $list12->fetch_assoc();
+                                            $d = $row00["title"];
+
+                                            echo "<option value='$d'><br/>";
+                                        };
 
                                         echo ' </datalist>';
-            ?>
+                                        ?>
                                         
                                 
                                         <input type="Submit" value="Search" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
@@ -164,14 +162,14 @@
                             Today's Date
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
-                            <?php 
+                            <?php
 
-                                
+
                                 echo $today;
 
-                                
 
-                        ?>
+
+                            ?>
                         </p>
                     </td>
                     <td width="10%">
@@ -201,43 +199,39 @@
                         <tbody>
                         
                             <?php
-                            
-                            if(($_GET)){
-                                
-                                
-                                if(isset($_GET["id"])){
-                                    
 
-                                    $id=$_GET["id"];
+                            if (($_GET)) {
+                                if (isset($_GET["id"])) {
+                                    $id = $_GET["id"];
 
-                                    $sqlmain= "select * from schedule inner join doctor on schedule.docid=doctor.docid where schedule.scheduleid=? order by schedule.scheduledate desc";
+                                    $sqlmain = "select * from schedule inner join doctor on schedule.docid=doctor.docid where schedule.scheduleid=? order by schedule.scheduledate desc";
                                     $stmt = $database->prepare($sqlmain);
                                     $stmt->bind_param("i", $id);
                                     $stmt->execute();
                                     $result = $stmt->get_result();
                                     //echo $sqlmain;
-                                    $row=$result->fetch_assoc();
-                                    $scheduleid=$row["scheduleid"];
-                                    $title=$row["title"];
-                                    $docname=$row["docname"];
-                                    $docemail=$row["docemail"];
-                                    $scheduledate=$row["scheduledate"];
-                                    $scheduletime=$row["scheduletime"];
-                                    $sql2="select * from appointment where scheduleid=$id";
+                                    $row = $result->fetch_assoc();
+                                    $scheduleid = $row["scheduleid"];
+                                    $title = $row["title"];
+                                    $docname = $row["docname"];
+                                    $docemail = $row["docemail"];
+                                    $scheduledate = $row["scheduledate"];
+                                    $scheduletime = $row["scheduletime"];
+                                    $sql2 = "select * from appointment where scheduleid=$id";
                                     //echo $sql2;
-                                     $result12= $database->query($sql2);
-                                     $apponum=($result12->num_rows)+1;
-                                    
+                                     $result12 = $database->query($sql2);
+                                     $apponum = ($result12->num_rows) + 1;
+
                                     echo '
                                         <form action="booking-complete.php" method="post">
-                                            <input type="hidden" name="scheduleid" value="'.$scheduleid.'" >
-                                            <input type="hidden" name="apponum" value="'.$apponum.'" >
-                                            <input type="hidden" name="date" value="'.$today.'" >
+                                            <input type="hidden" name="scheduleid" value="' . $scheduleid . '" >
+                                            <input type="hidden" name="apponum" value="' . $apponum . '" >
+                                            <input type="hidden" name="date" value="' . $today . '" >
 
                                         
                                     
                                     ';
-                                     
+
 
                                     echo '
                                     <td style="width: 50%;" rowspan="2">
@@ -248,16 +242,16 @@
                                                             Session Details
                                                         </div><br><br>
                                                         <div class="h3-search" style="font-size:18px;line-height:30px">
-                                                            Doctor name:  &nbsp;&nbsp;<b>'.$docname.'</b><br>
-                                                            Doctor Email:  &nbsp;&nbsp;<b>'.$docemail.'</b> 
+                                                            Doctor name:  &nbsp;&nbsp;<b>' . $docname . '</b><br>
+                                                            Doctor Email:  &nbsp;&nbsp;<b>' . $docemail . '</b> 
                                                         </div>
                                                         <div class="h3-search" style="font-size:18px;">
                                                           
                                                         </div><br>
                                                         <div class="h3-search" style="font-size:18px;">
-                                                            Session Title: '.$title.'<br>
-                                                            Session Scheduled Date: '.$scheduledate.'<br>
-                                                            Session Starts : '.$scheduletime.'<br>
+                                                            Session Title: ' . $title . '<br>
+                                                            Session Scheduled Date: ' . $scheduledate . '<br>
+                                                            Session Starts : ' . $scheduletime . '<br>
                                                             Channeling fee : <b>LKR.2 000.00</b>
 
                                                         </div>
@@ -278,7 +272,7 @@
                                                             Your Appointment Number
                                                         </div>
                                                         <center>
-                                                        <div class=" dashboard-icons" style="margin-left: 0px;width:90%;font-size:70px;font-weight:800;text-align:center;color:var(--btnnictext);background-color: var(--btnice)">'.$apponum.'</div>
+                                                        <div class=" dashboard-icons" style="margin-left: 0px;width:90%;font-size:70px;font-weight:800;text-align:center;color:var(--btnnictext);background-color: var(--btnice)">' . $apponum . '</div>
                                                     </center>
                                                        
                                                         </div><br>
@@ -296,18 +290,10 @@
                                             </form>
                                             </td>
                                         </tr>
-                                        '; 
-                                        
-
-
-
-
+                                        ';
                                 }
-
-
-
                             }
-                            
+
                             ?>
  
                             </tbody>

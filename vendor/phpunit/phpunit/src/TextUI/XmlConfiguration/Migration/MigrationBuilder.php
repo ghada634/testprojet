@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -53,7 +56,7 @@ final class MigrationBuilder
             }
 
             foreach ($migrations as $migration) {
-                $stack[] = new $migration;
+                $stack[] = new $migration();
             }
         }
 

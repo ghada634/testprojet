@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/global-state.
  *
@@ -17,6 +20,7 @@ use function function_exists;
 use function get_defined_functions;
 use function in_array;
 use function is_array;
+
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -59,9 +63,11 @@ class Restorer
         $globalVariables = $snapshot->globalVariables();
 
         foreach (array_keys($GLOBALS) as $key) {
-            if ($key !== 'GLOBALS' &&
+            if (
+                $key !== 'GLOBALS' &&
                 !in_array($key, $superGlobalArrays, true) &&
-                !$snapshot->excludeList()->isGlobalVariableExcluded($key)) {
+                !$snapshot->excludeList()->isGlobalVariableExcluded($key)
+            ) {
                 if (array_key_exists($key, $globalVariables)) {
                     $GLOBALS[$key] = $globalVariables[$key];
                 } else {
@@ -121,9 +127,11 @@ class Restorer
     {
         $superGlobalVariables = $snapshot->superGlobalVariables();
 
-        if (isset($GLOBALS[$superGlobalArray]) &&
+        if (
+            isset($GLOBALS[$superGlobalArray]) &&
             is_array($GLOBALS[$superGlobalArray]) &&
-            isset($superGlobalVariables[$superGlobalArray])) {
+            isset($superGlobalVariables[$superGlobalArray])
+        ) {
             $keys = array_keys(
                 array_merge(
                     $GLOBALS[$superGlobalArray],

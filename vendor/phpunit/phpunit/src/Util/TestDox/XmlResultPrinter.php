@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -13,6 +16,7 @@ use function array_filter;
 use function get_class;
 use function implode;
 use function strpos;
+
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\AssertionFailedError;
@@ -68,7 +72,7 @@ final class XmlResultPrinter extends Printer implements TestListener
         $this->root = $this->document->createElement('tests');
         $this->document->appendChild($this->root);
 
-        $this->prettifier = new NamePrettifier;
+        $this->prettifier = new NamePrettifier();
 
         parent::__construct($out);
     }
@@ -162,8 +166,7 @@ final class XmlResultPrinter extends Printer implements TestListener
 
         $groups = array_filter(
             $test->getGroups(),
-            static function ($group)
-            {
+            static function ($group) {
                 return !($group === 'small' || $group === 'medium' || $group === 'large' || strpos($group, '__phpunit_') === 0);
             },
         );

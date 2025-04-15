@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\Util;
 
 use const ENT_QUOTES;
+
 use function assert;
 use function class_exists;
 use function htmlspecialchars;
@@ -18,6 +22,7 @@ use function ord;
 use function preg_replace;
 use function settype;
 use function strlen;
+
 use DOMCharacterData;
 use DOMDocument;
 use DOMElement;
@@ -36,7 +41,7 @@ final class Xml
      */
     public static function import(DOMElement $element): DOMElement
     {
-        return (new DOMDocument)->importNode($element, true);
+        return (new DOMDocument())->importNode($element, true);
     }
 
     /**
@@ -132,7 +137,7 @@ final class Xml
                     }
                     // @codeCoverageIgnoreEnd
                 } else {
-                    $variable = new $className;
+                    $variable = new $className();
                 }
 
                 break;

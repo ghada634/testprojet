@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -25,7 +28,7 @@ abstract class BinaryOperator extends Operator
 
     public static function fromConstraints(Constraint ...$constraints): self
     {
-        $constraint = new static;
+        $constraint = new static();
 
         $constraint->constraints = $constraints;
 
@@ -37,8 +40,7 @@ abstract class BinaryOperator extends Operator
      */
     public function setConstraints(array $constraints): void
     {
-        $this->constraints = array_map(function ($constraint): Constraint
-        {
+        $this->constraints = array_map(function ($constraint): Constraint {
             return $this->checkConstraint($constraint);
         }, array_values($constraints));
     }

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -38,6 +41,7 @@ use function strtolower;
 use function strtoupper;
 use function substr;
 use function trim;
+
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Exception as UtilException;
@@ -130,8 +134,7 @@ final class NamePrettifier
 
         $annotationWithPlaceholders = false;
 
-        $callback = static function (string $variable): string
-        {
+        $callback = static function (string $variable): string {
             return sprintf('/%s(?=\b)/', preg_quote($variable, '/'));
         };
 
@@ -287,7 +290,7 @@ final class NamePrettifier
             }
 
             if (is_bool($value) || is_int($value) || is_float($value)) {
-                $value = (new Exporter)->export($value);
+                $value = (new Exporter())->export($value);
             }
 
             if (is_string($value) && $value === '') {
@@ -302,8 +305,7 @@ final class NamePrettifier
         }
 
         if ($this->useColor) {
-            $providedData = array_map(static function ($value)
-            {
+            $providedData = array_map(static function ($value) {
                 return Color::colorize('fg-cyan', Color::visualizeWhitespace((string) $value, true));
             }, $providedData);
         }

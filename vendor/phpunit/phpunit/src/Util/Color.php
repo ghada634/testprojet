@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
+
 use function array_keys;
 use function array_map;
 use function array_values;
@@ -116,8 +120,7 @@ final class Color
             $last        = count($path) - 1;
             $path[$last] = preg_replace_callback(
                 '/([\-_\.]+|phpt$)/',
-                static function ($matches)
-                {
+                static function ($matches) {
                     return self::dim($matches[0]);
                 },
                 $path[$last],
@@ -140,8 +143,7 @@ final class Color
     {
         $replaceMap = $visualizeEOL ? self::WHITESPACE_EOL_MAP : self::WHITESPACE_MAP;
 
-        return preg_replace_callback('/\s+/', static function ($matches) use ($replaceMap)
-        {
+        return preg_replace_callback('/\s+/', static function ($matches) use ($replaceMap) {
             return self::dim(strtr($matches[0], $replaceMap));
         }, $buffer);
     }

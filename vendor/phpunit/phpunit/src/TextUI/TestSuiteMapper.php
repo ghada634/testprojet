@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,12 +13,14 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_VERSION;
+
 use function explode;
 use function in_array;
 use function is_dir;
 use function is_file;
 use function strpos;
 use function version_compare;
+
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
 use PHPUnit\TextUI\XmlConfiguration\TestSuiteCollection;
@@ -35,7 +40,7 @@ final class TestSuiteMapper
     {
         try {
             $filterAsArray = $filter ? explode(',', $filter) : [];
-            $result        = new TestSuiteObject;
+            $result        = new TestSuiteObject();
 
             foreach ($configuration as $testSuiteConfiguration) {
                 if (!empty($filterAsArray) && !in_array($testSuiteConfiguration->name(), $filterAsArray, true)) {
@@ -56,7 +61,7 @@ final class TestSuiteMapper
                         continue;
                     }
 
-                    $files = (new Facade)->getFilesAsArray(
+                    $files = (new Facade())->getFilesAsArray(
                         $directory->path(),
                         $directory->suffix(),
                         $directory->prefix(),

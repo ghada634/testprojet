@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -12,6 +15,7 @@ namespace PHPUnit\TextUI;
 use const PATH_SEPARATOR;
 use const PHP_EOL;
 use const STDIN;
+
 use function array_keys;
 use function assert;
 use function class_exists;
@@ -38,6 +42,7 @@ use function stream_resolve_include_path;
 use function strpos;
 use function trim;
 use function version_compare;
+
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\StandardTestSuiteLoader;
@@ -96,7 +101,7 @@ class Command
     public static function main(bool $exit = true): int
     {
         try {
-            return (new static)->run($_SERVER['argv'], $exit);
+            return (new static())->run($_SERVER['argv'], $exit);
         } catch (Throwable $t) {
             throw new RuntimeException(
                 $t->getMessage(),
@@ -219,7 +224,7 @@ class Command
     protected function handleArguments(array $argv): void
     {
         try {
-            $arguments = (new Builder)->fromParameters($argv, array_keys($this->longOptions));
+            $arguments = (new Builder())->fromParameters($argv, array_keys($this->longOptions));
         } catch (ArgumentsException $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }
@@ -276,7 +281,7 @@ class Command
             );
         }
 
-        $this->arguments = (new Mapper)->mapToLegacyArray($arguments);
+        $this->arguments = (new Mapper())->mapToLegacyArray($arguments);
 
         $this->handleCustomOptions($arguments->unrecognizedOptions());
         $this->handleCustomTestSuite();
@@ -330,7 +335,7 @@ class Command
 
         if (isset($this->arguments['configuration'])) {
             try {
-                $this->arguments['configurationObject'] = (new Loader)->load($this->arguments['configuration']);
+                $this->arguments['configurationObject'] = (new Loader())->load($this->arguments['configuration']);
             } catch (Throwable $e) {
                 print $e->getMessage() . PHP_EOL;
 
@@ -339,7 +344,7 @@ class Command
 
             $phpunitConfiguration = $this->arguments['configurationObject']->phpunit();
 
-            (new PhpHandler)->handle($this->arguments['configurationObject']->php());
+            (new PhpHandler())->handle($this->arguments['configurationObject']->php());
 
             if (isset($this->arguments['bootstrap'])) {
                 $this->handleBootstrap($this->arguments['bootstrap']);
@@ -352,7 +357,7 @@ class Command
             }
 
             if (!isset($this->arguments['noExtensions']) && $phpunitConfiguration->hasExtensionsDirectory() && extension_loaded('phar')) {
-                $result = (new PharLoader)->loadPharExtensionsInDirectory($phpunitConfiguration->extensionsDirectory());
+                $result = (new PharLoader())->loadPharExtensionsInDirectory($phpunitConfiguration->extensionsDirectory());
 
                 $this->arguments['loadedExtensions']    = $result['loadedExtensions'];
                 $this->arguments['notLoadedExtensions'] = $result['notLoadedExtensions'];
@@ -388,7 +393,7 @@ class Command
 
             if (!isset($this->arguments['test'])) {
                 try {
-                    $this->arguments['test'] = (new TestSuiteMapper)->map(
+                    $this->arguments['test'] = (new TestSuiteMapper())->map(
                         $this->arguments['configurationObject']->testSuite(),
                         $this->arguments['testsuite'] ?? '',
                     );
@@ -636,7 +641,7 @@ class Command
     protected function showHelp(): void
     {
         $this->printVersionString();
-        (new Help)->writeToConsole();
+        (new Help())->writeToConsole();
     }
 
     /**
@@ -753,7 +758,7 @@ class Command
             ],
         );
 
-        $renderer = new TextTestListRenderer;
+        $renderer = new TextTestListRenderer();
 
         print $renderer->render($suite);
 
@@ -780,7 +785,7 @@ class Command
             ],
         );
 
-        $renderer = new XmlTestListRenderer;
+        $renderer = new XmlTestListRenderer();
 
         file_put_contents($target, $renderer->render($suite));
 
@@ -833,7 +838,7 @@ class Command
             $cacheDirectory = '.phpunit.cache';
         }
 
-        $generator = new Generator;
+        $generator = new Generator();
 
         file_put_contents(
             'phpunit.xml',
@@ -856,7 +861,7 @@ class Command
     {
         $this->printVersionString();
 
-        $result = (new SchemaDetector)->detect($filename);
+        $result = (new SchemaDetector())->detect($filename);
 
         if (!$result->detected()) {
             print $filename . ' does not validate against any known schema.' . PHP_EOL;
@@ -878,7 +883,7 @@ class Command
         try {
             file_put_contents(
                 $filename,
-                (new Migrator)->migrate($filename),
+                (new Migrator())->migrate($filename),
             );
 
             print 'Migrated configuration: ' . $filename . PHP_EOL;
@@ -926,10 +931,10 @@ class Command
             exit(TestRunner::EXCEPTION_EXIT);
         }
 
-        $filter = new Filter;
+        $filter = new Filter();
 
         if ($configuration->codeCoverage()->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
-            (new FilterMapper)->map(
+            (new FilterMapper())->map(
                 $filter,
                 $configuration->codeCoverage(),
             );
@@ -949,12 +954,12 @@ class Command
             exit(TestRunner::EXCEPTION_EXIT);
         }
 
-        $timer = new Timer;
+        $timer = new Timer();
         $timer->start();
 
         print 'Warming cache for static analysis ... ';
 
-        (new CacheWarmer)->warmCache(
+        (new CacheWarmer())->warmCache(
             $cacheDirectory,
             !$configuration->codeCoverage()->disableCodeCoverageIgnore(),
             $configuration->codeCoverage()->ignoreDeprecatedCodeUnits(),

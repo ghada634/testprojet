@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -12,6 +15,7 @@ namespace PHPUnit\TextUI;
 use const PHP_EOL;
 use const PHP_SAPI;
 use const PHP_VERSION;
+
 use function array_diff;
 use function array_map;
 use function array_merge;
@@ -30,6 +34,7 @@ use function realpath;
 use function sort;
 use function sprintf;
 use function time;
+
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
@@ -125,12 +130,12 @@ final class TestRunner extends BaseTestRunner
     public function __construct(?TestSuiteLoader $loader = null, ?CodeCoverageFilter $filter = null)
     {
         if ($filter === null) {
-            $filter = new CodeCoverageFilter;
+            $filter = new CodeCoverageFilter();
         }
 
         $this->codeCoverageFilter = $filter;
         $this->loader             = $loader;
-        $this->timer              = new Timer;
+        $this->timer              = new Timer();
     }
 
     /**
@@ -198,7 +203,7 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($arguments['executionOrder'] !== TestSuiteSorter::ORDER_DEFAULT || $arguments['executionOrderDefects'] !== TestSuiteSorter::ORDER_DEFAULT || $arguments['resolveDependencies']) {
-            $cache = $cache ?? new NullTestResultCache;
+            $cache = $cache ?? new NullTestResultCache();
 
             $cache->load();
 
@@ -211,7 +216,7 @@ final class TestRunner extends BaseTestRunner
         }
 
         if (is_int($arguments['repeat']) && $arguments['repeat'] > 0) {
-            $_suite = new TestSuite;
+            $_suite = new TestSuite();
 
             /* @noinspection PhpUnusedLocalVariableInspection */
             foreach (range(1, $arguments['repeat']) as $step) {
@@ -225,7 +230,7 @@ final class TestRunner extends BaseTestRunner
 
         $result = $this->createTestResult();
 
-        $listener       = new TestListenerAdapter;
+        $listener       = new TestListenerAdapter();
         $listenerNeeded = false;
 
         foreach ($this->extensions as $extension) {
@@ -430,7 +435,7 @@ final class TestRunner extends BaseTestRunner
                 if ($codeCoverageConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
                     $coverageFilterFromConfigurationFile = true;
 
-                    (new FilterMapper)->map(
+                    (new FilterMapper())->map(
                         $this->codeCoverageFilter,
                         $codeCoverageConfiguration,
                     );
@@ -440,11 +445,13 @@ final class TestRunner extends BaseTestRunner
 
         if ($codeCoverageReports > 0) {
             try {
-                if (isset($codeCoverageConfiguration) &&
-                    ($codeCoverageConfiguration->pathCoverage() || (isset($arguments['pathCoverage']) && $arguments['pathCoverage'] === true))) {
-                    $codeCoverageDriver = (new Selector)->forLineAndPathCoverage($this->codeCoverageFilter);
+                if (
+                    isset($codeCoverageConfiguration) &&
+                    ($codeCoverageConfiguration->pathCoverage() || (isset($arguments['pathCoverage']) && $arguments['pathCoverage'] === true))
+                ) {
+                    $codeCoverageDriver = (new Selector())->forLineAndPathCoverage($this->codeCoverageFilter);
                 } else {
-                    $codeCoverageDriver = (new Selector)->forLineCoverage($this->codeCoverageFilter);
+                    $codeCoverageDriver = (new Selector())->forLineCoverage($this->codeCoverageFilter);
                 }
 
                 $codeCoverage = new CodeCoverage(
@@ -562,7 +569,7 @@ final class TestRunner extends BaseTestRunner
             $warnings[] = 'Less than 16 columns requested, number of columns set to 16';
         }
 
-        if ((new Runtime)->discardsComments()) {
+        if ((new Runtime())->discardsComments()) {
             $warnings[] = 'opcache.save_comments=0 set; annotations will not work';
         }
 
@@ -581,7 +588,7 @@ final class TestRunner extends BaseTestRunner
             assert($arguments['configurationObject'] instanceof Configuration);
 
             if ($arguments['configurationObject']->hasValidationErrors()) {
-                if ((new SchemaDetector)->detect($arguments['configurationObject']->filename())->detected()) {
+                if ((new SchemaDetector())->detect($arguments['configurationObject']->filename())->detected()) {
                     $this->writeMessage('Warning', 'Your XML configuration validates against a deprecated schema.');
                     $this->writeMessage('Suggestion', 'Migrate your XML configuration using "--migrate-configuration"!');
                 } else {
@@ -599,7 +606,7 @@ final class TestRunner extends BaseTestRunner
         if (isset($arguments['xdebugFilterFile'], $codeCoverageConfiguration)) {
             $this->write(PHP_EOL . 'Please note that --dump-xdebug-filter and --prepend are deprecated and will be removed in PHPUnit 10.' . PHP_EOL);
 
-            $script = (new XdebugFilterScriptGenerator)->generate($codeCoverageConfiguration);
+            $script = (new XdebugFilterScriptGenerator())->generate($codeCoverageConfiguration);
 
             if ($arguments['xdebugFilterFile'] !== 'php://stdout' && $arguments['xdebugFilterFile'] !== 'php://stderr' && !Filesystem::createDirectory(dirname($arguments['xdebugFilterFile']))) {
                 $this->write(sprintf('Cannot write Xdebug filter script to %s ' . PHP_EOL, $arguments['xdebugFilterFile']));
@@ -625,7 +632,7 @@ final class TestRunner extends BaseTestRunner
         $result->beStrictAboutTodoAnnotatedTests($arguments['disallowTodoAnnotatedTests']);
         $result->beStrictAboutResourceUsageDuringSmallTests($arguments['beStrictAboutResourceUsageDuringSmallTests']);
 
-        if ($arguments['enforceTimeLimit'] === true && !(new Invoker)->canInvokeWithTimeout()) {
+        if ($arguments['enforceTimeLimit'] === true && !(new Invoker())->canInvokeWithTimeout()) {
             $this->writeMessage('Error', 'PHP extension pcntl is required for enforcing time limits');
         }
 
@@ -664,7 +671,7 @@ final class TestRunner extends BaseTestRunner
                 $this->codeCoverageGenerationStart('PHP');
 
                 try {
-                    $writer = new PhpReport;
+                    $writer = new PhpReport();
                     $writer->process($codeCoverage, $arguments['coveragePHP']);
 
                     $this->codeCoverageGenerationSucceeded();
@@ -679,7 +686,7 @@ final class TestRunner extends BaseTestRunner
                 $this->codeCoverageGenerationStart('Clover XML');
 
                 try {
-                    $writer = new CloverReport;
+                    $writer = new CloverReport();
                     $writer->process($codeCoverage, $arguments['coverageClover']);
 
                     $this->codeCoverageGenerationSucceeded();
@@ -694,7 +701,7 @@ final class TestRunner extends BaseTestRunner
                 $this->codeCoverageGenerationStart('Cobertura XML');
 
                 try {
-                    $writer = new CoberturaReport;
+                    $writer = new CoberturaReport();
                     $writer->process($codeCoverage, $arguments['coverageCobertura']);
 
                     $this->codeCoverageGenerationSucceeded();
@@ -823,7 +830,7 @@ final class TestRunner extends BaseTestRunner
     public function getLoader(): TestSuiteLoader
     {
         if ($this->loader === null) {
-            $this->loader = new StandardTestSuiteLoader;
+            $this->loader = new StandardTestSuiteLoader();
         }
 
         return $this->loader;
@@ -847,7 +854,7 @@ final class TestRunner extends BaseTestRunner
 
     private function createTestResult(): TestResult
     {
-        return new TestResult;
+        return new TestResult();
     }
 
     private function write(string $buffer): void
@@ -870,7 +877,7 @@ final class TestRunner extends BaseTestRunner
     private function handleConfiguration(array &$arguments): void
     {
         if (!isset($arguments['configurationObject']) && isset($arguments['configuration'])) {
-            $arguments['configurationObject'] = (new Loader)->load($arguments['configuration']);
+            $arguments['configurationObject'] = (new Loader())->load($arguments['configuration']);
         }
 
         if (!isset($arguments['warnings'])) {
@@ -882,7 +889,7 @@ final class TestRunner extends BaseTestRunner
         $arguments['listeners'] = $arguments['listeners'] ?? [];
 
         if (isset($arguments['configurationObject'])) {
-            (new PhpHandler)->handle($arguments['configurationObject']->php());
+            (new PhpHandler())->handle($arguments['configurationObject']->php());
 
             $codeCoverageConfiguration = $arguments['configurationObject']->codeCoverage();
 
@@ -1007,7 +1014,7 @@ final class TestRunner extends BaseTestRunner
             }
 
             if (!isset($arguments['noExtensions'])) {
-                $extensionHandler = new ExtensionHandler;
+                $extensionHandler = new ExtensionHandler();
 
                 foreach ($arguments['configurationObject']->extensions() as $extension) {
                     $extensionHandler->registerExtension($extension, $this);
@@ -1069,7 +1076,7 @@ final class TestRunner extends BaseTestRunner
             }
         }
 
-        $extensionHandler = new ExtensionHandler;
+        $extensionHandler = new ExtensionHandler();
 
         foreach ($arguments['extensions'] as $extension) {
             $extensionHandler->registerExtension($extension, $this);
@@ -1134,15 +1141,17 @@ final class TestRunner extends BaseTestRunner
 
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
     {
-        if (!$arguments['filter'] &&
+        if (
+            !$arguments['filter'] &&
             empty($arguments['groups']) &&
             empty($arguments['excludeGroups']) &&
             empty($arguments['testsCovering']) &&
-            empty($arguments['testsUsing'])) {
+            empty($arguments['testsUsing'])
+        ) {
             return;
         }
 
-        $filterFactory = new Factory;
+        $filterFactory = new Factory();
 
         if (!empty($arguments['excludeGroups'])) {
             $filterFactory->addFilter(
@@ -1162,8 +1171,7 @@ final class TestRunner extends BaseTestRunner
             $filterFactory->addFilter(
                 new ReflectionClass(IncludeGroupFilterIterator::class),
                 array_map(
-                    static function (string $name): string
-                    {
+                    static function (string $name): string {
                         return '__phpunit_covers_' . $name;
                     },
                     $arguments['testsCovering'],
@@ -1175,8 +1183,7 @@ final class TestRunner extends BaseTestRunner
             $filterFactory->addFilter(
                 new ReflectionClass(IncludeGroupFilterIterator::class),
                 array_map(
-                    static function (string $name): string
-                    {
+                    static function (string $name): string {
                         return '__phpunit_uses_' . $name;
                     },
                     $arguments['testsUsing'],

@@ -18,8 +18,16 @@ pipeline {
 
         stage('Tests') {
             steps {
-                // Exécution réelle des tests avec PHPUnit
                 bat 'php vendor\\bin\\phpunit tests'
+            }
+        }
+
+        // 👉 STAGE AJOUTÉ POUR SONARQUBE
+        stage('Analyse SonarQube') {
+            steps {
+                withSonarQubeEnv('SonarQubeServer') {
+                    bat 'sonar-scanner -Dsonar.projectKey=testprojet -Dsonar.sources=. -Dsonar.php.tests.reportPath=tests'
+                }
             }
         }
 

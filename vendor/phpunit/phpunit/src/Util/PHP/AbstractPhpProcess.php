@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +14,7 @@ namespace PHPUnit\Util\PHP;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_SAPI;
+
 use function array_keys;
 use function array_merge;
 use function assert;
@@ -28,6 +32,7 @@ use function substr;
 use function trim;
 use function unlink;
 use function unserialize;
+
 use __PHP_Incomplete_Class;
 use ErrorException;
 use PHPUnit\Framework\AssertionFailedError;
@@ -78,15 +83,15 @@ abstract class AbstractPhpProcess
     public static function factory(): self
     {
         if (DIRECTORY_SEPARATOR === '\\') {
-            return new WindowsPhpProcess;
+            return new WindowsPhpProcess();
         }
 
-        return new DefaultPhpProcess;
+        return new DefaultPhpProcess();
     }
 
     public function __construct()
     {
-        $this->runtime = new Runtime;
+        $this->runtime = new Runtime();
     }
 
     /**
@@ -286,8 +291,7 @@ abstract class AbstractPhpProcess
                 /**
                  * @throws ErrorException
                  */
-                static function ($errno, $errstr, $errfile, $errline): void
-                {
+                static function ($errno, $errstr, $errfile, $errline): void {
                     throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
                 },
             );

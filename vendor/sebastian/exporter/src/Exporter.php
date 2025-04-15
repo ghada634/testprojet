@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of sebastian/exporter.
  *
@@ -33,6 +36,7 @@ use function str_replace;
 use function strlen;
 use function substr;
 use function var_export;
+
 use SebastianBergmann\RecursionContext\Context;
 use SplObjectStorage;
 
@@ -83,7 +87,7 @@ class Exporter
         $exporter = new self();
 
         if (!$context) {
-            $context = new Context;
+            $context = new Context();
         }
 
         $array = $data;
@@ -286,7 +290,7 @@ class Exporter
         $whitespace = str_repeat(' ', 4 * $indentation);
 
         if (!$processed) {
-            $processed = new Context;
+            $processed = new Context();
         }
 
         if (is_array($value)) {

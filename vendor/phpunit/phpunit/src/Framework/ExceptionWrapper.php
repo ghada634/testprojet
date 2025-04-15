@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,9 +13,11 @@
 namespace PHPUnit\Framework;
 
 use const PHP_VERSION_ID;
+
 use function array_keys;
 use function get_class;
 use function spl_object_hash;
+
 use PHPUnit\Util\Filter;
 use Throwable;
 use WeakReference;

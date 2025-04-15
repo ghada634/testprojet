@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,6 +14,7 @@ namespace PHPUnit\Util;
 
 use const PHP_OS;
 use const PHP_VERSION;
+
 use function addcslashes;
 use function array_flip;
 use function array_key_exists;
@@ -37,6 +41,7 @@ use function strpos;
 use function strtolower;
 use function trim;
 use function version_compare;
+
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\InvalidCoversTargetException;
@@ -243,7 +248,7 @@ final class Test
             }
         }
 
-        if (!empty($required['OSFAMILY']) && $required['OSFAMILY'] !== (new OperatingSystem)->getFamily()) {
+        if (!empty($required['OSFAMILY']) && $required['OSFAMILY'] !== (new OperatingSystem())->getFamily()) {
             $missing[] = sprintf('Operating system %s is required.', $required['OSFAMILY']);
             $hint      = $hint ?? 'OSFAMILY';
         }
@@ -531,7 +536,7 @@ final class Test
             self::$hookMethods[$className] = self::emptyHookMethodsArray();
 
             try {
-                foreach ((new Reflection)->methodsInTestClass(new ReflectionClass($className)) as $method) {
+                foreach ((new Reflection())->methodsInTestClass(new ReflectionClass($className)) as $method) {
                     $docBlock = Registry::getInstance()->forMethod($className, $method->getName());
 
                     if ($method->isStatic()) {
@@ -631,7 +636,7 @@ final class Test
         }
 
         $codeUnits = CodeUnitCollection::fromArray([]);
-        $mapper    = new Mapper;
+        $mapper    = new Mapper();
 
         foreach (array_unique($list) as $element) {
             if ($classShortcut && strncmp($element, '::', 2) === 0) {

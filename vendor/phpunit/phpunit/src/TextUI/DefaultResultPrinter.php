@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -10,6 +13,7 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
+
 use function array_map;
 use function array_reverse;
 use function count;
@@ -25,6 +29,7 @@ use function str_repeat;
 use function strlen;
 use function trim;
 use function vsprintf;
+
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidArgumentException;
@@ -150,7 +155,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
             throw InvalidArgumentException::create(5, 'integer or "max"');
         }
 
-        $console            = new Console;
+        $console            = new Console();
         $maxNumberOfColumns = $console->getNumberOfColumns();
 
         if ($numberOfColumns === 'max' || ($numberOfColumns !== 80 && $numberOfColumns > $maxNumberOfColumns)) {
@@ -168,7 +173,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
             $this->colors = (self::COLOR_ALWAYS === $colors);
         }
 
-        $this->timer = new Timer;
+        $this->timer = new Timer();
 
         $this->timer->start();
     }
@@ -404,7 +409,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
     protected function printHeader(TestResult $result): void
     {
         if (count($result) > 0) {
-            $this->write(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . PHP_EOL . PHP_EOL);
+            $this->write(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter())->resourceUsage($this->timer->stop()) . PHP_EOL . PHP_EOL);
         }
     }
 
