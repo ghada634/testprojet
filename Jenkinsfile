@@ -8,21 +8,22 @@ pipeline {
             }
         }
 
-        stage('Installer Composer') {
+        stage('Construire l\'image Docker') {
             steps {
-                bat 'php -r "copy(\'https://getcomposer.org/installer\', \'composer-setup.php\');"'
-                bat 'php composer-setup.php'
-                bat 'php composer.phar install'
+                script {
+                    bat 'docker build -t edoc-app .'
+                }
             }
         }
 
-        stage('Tests') {
+        stage('Exécuter les tests') {
             steps {
-                bat 'php vendor\\bin\\phpunit tests'
+                script {
+                    bat 'docker run --rm edoc-app vendor\\bin\\phpunit tests'
+                }
             }
         }
 
-        // 👉 STAGE AJOUTÉ POUR SONARQUBE
         stage('Analyse SonarQube') {
             steps {
                 withSonarQubeEnv('SonarQubeServer') {
@@ -33,7 +34,7 @@ pipeline {
 
         stage('Déploiement') {
             steps {
-                bat 'echo Déploiement simulé avec succès!'
+                echo '🚀 Déploiement simulé avec succès !'
             }
         }
     }
