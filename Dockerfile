@@ -18,4 +18,4 @@ RUN apt-get update && apt-get install -y unzip curl \
 WORKDIR /var/www/html
 RUN composer install
 
-EXPOSE 80
+EXPOSE 8000
