@@ -19,7 +19,7 @@ pipeline {
         stage('Exécuter les tests') {
             steps {
                 script {
-                    bat 'docker run --rm edoc-app vendor\\bin\\phpunit tests'
+                    bat 'vendor\\bin\\phpunit tests'
                 }
             }
         }
