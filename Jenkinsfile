@@ -8,19 +8,11 @@ pipeline {
             }
         }
 
-        stage('Construire l\'image Docker') {
+        stage('Construire et exécuter les tests avec Docker Compose') {
             steps {
                 script {
-                    bat 'docker build -t edoc-app .'
-                }
-            }
-        }
-
-        stage('Exécuter les tests dans le conteneur Docker') {
-            steps {
-                script {
-                    // Exécuter PHPUnit à l'intérieur du conteneur Docker
-                    bat 'docker run --rm edoc-app vendor/bin/phpunit tests'
+                    // Construire les conteneurs et exécuter les tests
+                    bat 'docker-compose up --build --abort-on-container-exit --exit-code-from app'
                 }
             }
         }
@@ -36,11 +28,19 @@ pipeline {
         stage('Déploiement Docker') {
             steps {
                 script {
-                    // Arrêter et supprimer l'ancien conteneur, puis démarrer le nouveau
+                    // Déployer l'application seule (sans la base de données si nécessaire)
                     bat 'docker stop edoc-container || echo "Pas de conteneur à arrêter"'
                     bat 'docker rm edoc-container || echo "Pas de conteneur à supprimer"'
+                    bat 'docker build -t edoc-app .'
                     bat 'docker run -d -p 8082:80 --name edoc-container edoc-app'
                 }
+            }
+        }
+
+        stage('Nettoyage Docker Compose') {
+            steps {
+                // Nettoyage des services et réseaux après test
+                bat 'docker-compose down'
             }
         }
     }
