@@ -2,21 +2,24 @@ pipeline {
     agent any
 
     stages {
+        // Cloner le code depuis le dépôt Git
         stage('Cloner le code') {
             steps {
                 git 'https://github.com/ghada634/testprojet.git'
             }
         }
 
-        stage('Construire et exécuter les tests avec Docker Compose') {
+        // Exécuter les tests
+        stage('Exécuter les tests') {
             steps {
                 script {
-                    // Construire les conteneurs et exécuter les tests
-                    bat 'docker-compose up --build --abort-on-container-exit --exit-code-from app'
+                    // Exécution des tests PHPUnit
+                    bat '.\\vendor\\bin\\phpunit tests'
                 }
             }
         }
 
+        // Analyser le code avec SonarQube
         stage('Analyse SonarQube') {
             steps {
                 withSonarQubeEnv('SonarQubeServer') {
@@ -25,22 +28,25 @@ pipeline {
             }
         }
 
-        stage('Déploiement Docker') {
+        // Construire l'image Docker
+        stage('Construire l\'image Docker') {
             steps {
                 script {
-                    // Déployer l'application seule (sans la base de données si nécessaire)
-                    bat 'docker stop edoc-container || echo "Pas de conteneur à arrêter"'
-                    bat 'docker rm edoc-container || echo "Pas de conteneur à supprimer"'
+                    // Construction de l'image Docker
                     bat 'docker build -t edoc-app .'
-                    bat 'docker run -d -p 8082:80 --name edoc-container edoc-app'
                 }
             }
         }
 
-        stage('Nettoyage Docker Compose') {
+        // Déployer l'application
+        stage('Déploiement') {
             steps {
-                // Nettoyage des services et réseaux après test
-                bat 'docker-compose down'
+                script {
+                    // Déployer le conteneur Docker
+                    bat 'docker stop edoc-container || echo "Pas de conteneur à arrêter"'
+                    bat 'docker rm edoc-container || echo "Pas de conteneur à supprimer"'
+                    bat 'docker run -d -p 8082:80 --name edoc-container edoc-app'
+                }
             }
         }
     }
