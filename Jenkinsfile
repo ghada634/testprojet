@@ -19,7 +19,7 @@ pipeline {
         stage('Exécuter les tests') {
             steps {
                 script {
-                    bat 'vendor\\bin\\phpunit tests'
+                    bat 'docker run --rm edoc-app vendor\\bin\\phpunit tests'
                 }
             }
         }
@@ -32,9 +32,19 @@ pipeline {
             }
         }
 
-        stage('Déploiement') {
+        stage('Déploiement Docker') {
             steps {
-                echo '🚀 Déploiement simulé avec succès !'
+                script {
+                    // Construire l'image Docker
+                    bat 'docker build -t edoc-app .'
+                    
+                    // Arrêter et supprimer le conteneur existant, si nécessaire
+                    bat 'docker stop edoc-container || echo "Pas de conteneur à arrêter"'
+                    bat 'docker rm edoc-container || echo "Pas de conteneur à supprimer"'
+                    
+                    // Lancer le conteneur avec le port 8082
+                    bat 'docker run -d -p 8082:80 --name edoc-container edoc-app'
+                }
             }
         }
     }
