@@ -14,7 +14,8 @@ pipeline {
             steps {
                 script {
                     // Exécution des tests PHPUnit
-                    bat '.\\vendor\\bin\\phpunit tests'
+                    bat '.\\vendor\\bin\\phpunit --coverage-clover reports/coverage.xml --log-junit reports/junit.xml tests'
+
                 }
             }
         }

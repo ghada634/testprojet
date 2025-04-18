@@ -14,16 +14,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd mysqli pdo pdo_mysql
+    && docker-php-ext-install gd mysqli pdo pdo_mysql \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copier les fichiers du projet dans le conteneur
-COPY . /var/www/html/
-
-# Changer les permissions pour Apache
-RUN chown -R www-data:www-data /var/www/html
-
-# Installer Composer (gestionnaire de dépendances PHP)
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Exposer le port 80 (par défaut pour Apache)
+# Exposer le port 80 pour Apache
 EXPOSE 80
