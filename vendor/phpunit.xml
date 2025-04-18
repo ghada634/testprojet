@@ -1,0 +1,13 @@
+<phpunit bootstrap="vendor/autoload.php">
+    <coverage>
+        <include>
+            <directory>src</directory>
+        </include>
+        <report>
+            <clover outputFile="reports/coverage.xml"/>
+        </report>
+    </coverage>
+    <logging>
+        <junit outputFile="reports/junit.xml"/>
+    </logging>
+</phpunit>
