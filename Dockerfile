@@ -4,27 +4,26 @@ FROM php:8.0-apache
 RUN apt-get update \
     && apt-get install -y \
         curl \
-        libfreetype6-dev \
-        libjpeg-dev \
-        libpng-dev \
-        unzip \
-        libzip-dev \
-        libonig-dev \
-        libxml2-dev \
-        zlib1g-dev \
-        libpq-dev \
-        libicu-dev \
-        libxslt1-dev \
-        libssl-dev \
-        libcurl4-openssl-dev \
         git \
-        zip \
         gnupg \
-        && docker-php-ext-configure gd --with-freetype --with-jpeg \
-        && docker-php-ext-install gd mysqli pdo pdo_mysql \
-        && apt-get clean \
-        && rm -rf /var/lib/apt/lists/* \
-        && a2enmod rewrite
+        libcurl4-openssl-dev \
+        libfreetype6-dev \
+        libicu-dev \
+        libjpeg-dev \
+        libonig-dev \
+        libpng-dev \
+        libpq-dev \
+        libssl-dev \
+        libxml2-dev \
+        libxslt1-dev \
+        libzip-dev \
+        unzip \
+        zip \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd mysqli pdo pdo_mysql \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && a2enmod rewrite
 
 # Copier le code dans le conteneur
 COPY . /var/www/html/
