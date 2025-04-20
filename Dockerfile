@@ -23,18 +23,14 @@ RUN apt-get update \
     && docker-php-ext-install gd mysqli pdo pdo_mysql \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && a2enmod rewrite
+    && a2enmod rewrite \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Copier le code dans le conteneur
+# Copier le code et donner les bons droits
 COPY . /var/www/html/
-
-# Donner les bons droits
 RUN chown -R www-data:www-data /var/www/html
 
-# Installer Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Installer les dépendances PHP via Composer
+# Définir le répertoire de travail et installer les dépendances PHP
 WORKDIR /var/www/html
 RUN composer install
 
