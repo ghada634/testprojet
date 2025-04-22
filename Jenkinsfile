@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SONARQUBE_ENV = 'SonarQubeServer' // Nom de l'installation SonarQube configurée dans Jenkins
-        RECIPIENTS = 'ghada@gmail.com'    // Change cette adresse avec la tienne
+        RECIPIENTS = 'ghadaderouiche8@gmail.com'    // Change cette adresse avec la tienne
     }
 
     stages {
