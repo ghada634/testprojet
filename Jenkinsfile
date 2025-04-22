@@ -44,8 +44,7 @@ pipeline {
             steps {
                 script {
                     // Déployer le conteneur Docker
-                    bat 'docker stop edoc-container || echo "Pas de conteneur à arrêter"'
-                    bat 'docker rm edoc-container || echo "Pas de conteneur à supprimer"'
+                 
                     bat 'docker run -d -p 8082:80 --name edoc-container edoc-app'
                 }
             }
