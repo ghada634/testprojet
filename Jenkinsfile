@@ -2,48 +2,55 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_ENV = 'SonarQubeServer' // Nom de l'installation SonarQube configurée dans Jenkins
-        RECIPIENTS = 'ghadaderouiche8@gmail.com'    // Change cette adresse avec la tienne
+        RECIPIENTS = 'ghadaderouiche8@gmail.com' // Adresse email pour recevoir les notifications
     }
 
     stages {
+        // Cloner le code depuis le dépôt Git
         stage('Cloner le code') {
             steps {
                 git 'https://github.com/ghada634/testprojet.git'
             }
         }
 
-        stage('Installation des dépendances') {
-            steps {
-                bat 'composer install'
-            }
-        }
-
+        // Exécuter les tests
         stage('Exécuter les tests') {
             steps {
-                bat '.\\vendor\\bin\\phpunit tests'
+                script {
+                    // Exécution des tests PHPUnit
+                    bat '.\\vendor\\bin\\phpunit tests'
+                }
             }
         }
 
+        // Analyser le code avec SonarQube
         stage('Analyse SonarQube') {
             steps {
-                withSonarQubeEnv("${SONARQUBE_ENV}") {
+                withSonarQubeEnv('SonarQubeServer') {
                     bat 'sonar-scanner -Dsonar.projectKey=testprojet -Dsonar.sources=. -Dsonar.php.tests.reportPath=tests'
                 }
             }
         }
 
+        // Construire l'image Docker
         stage('Construire l\'image Docker') {
             steps {
-                bat 'docker build -t edoc-app .'
+                script {
+                    // Construction de l'image Docker
+                    bat 'docker build -t edoc-app .'
+                }
             }
         }
 
+        // Déployer l'application
         stage('Déploiement') {
             steps {
-                bat 'docker stop edoc-container || echo "Pas de conteneur à arrêter"'
-                bat 'docker rm edoc-container || echo "Pas de conteneur à supprimer"'
-                bat 'docker run -d -p 8082:80 --name edoc-container edoc-app'
+                script {
+                    // Déployer le conteneur Docker
+                    bat 'docker stop edoc-container || echo "Pas de conteneur à arrêter"'
+                    bat 'docker rm edoc-container || echo "Pas de conteneur à supprimer"'
+                    bat 'docker run -d -p 8082:80 --name edoc-container edoc-app'
+                }
             }
         }
     }
