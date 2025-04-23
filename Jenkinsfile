@@ -51,7 +51,7 @@ pipeline {
         success {
             mail to: "${RECIPIENTS}",
                  subject: "✅ SUCCESS - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Bonjour Ghada 👩‍💻,\n\nLe build a RÉUSSI 🎉 !\n\nConsulte les détails ici : ${env.BUILD_URL}",
+                 body: "Bonjour Ghada Le build a RÉUSSI Consulte les détails ici : ${env.BUILD_URL}",
                  mimeType: 'text/plain',
                  charset: 'UTF-8'
         }
