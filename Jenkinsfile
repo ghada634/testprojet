@@ -36,6 +36,15 @@ pipeline {
             }
         }
 
+        stage('Scan Trivy pour vulnérabilités Docker') {
+            steps {
+                script {
+                    // Scanne l'image Docker pour les vulnérabilités
+                    bat 'trivy image edoc-app'
+                }
+            }
+        }
+
         stage('Déploiement') {
             steps {
                 script {
@@ -51,7 +60,7 @@ pipeline {
         success {
             mail to: "${RECIPIENTS}",
                  subject: "✅ SUCCESS - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Bonjour Ghada Le build a reussi Consulte les détails ici : ${env.BUILD_URL}",
+                 body: "Bonjour Ghada Le build a réussi. Consulte les détails ici : ${env.BUILD_URL}",
                  mimeType: 'text/plain',
                  charset: 'UTF-8'
         }
