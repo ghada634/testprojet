@@ -15,22 +15,18 @@ pipeline {
         stage('Exécuter les tests') {
             steps {
                 script {
-                    try {
-                        bat '.\\vendor\\bin\\phpunit tests'
-                    } catch (Exception e) {
-                        echo "Erreur lors de l'exécution des tests : ${e.getMessage()}"
-                        currentBuild.result = 'FAILURE'
-                        throw e
-                    }
+                    bat '.\\vendor\\bin\\phpunit tests'
                 }
             }
         }
 
         stage('Analyse SonarQube') {
             steps {
-                withSonarQubeEnv('SonarQubeServer') {
+                script {
                     try {
-                        bat 'sonar-scanner -Dsonar.projectKey=testprojet -Dsonar.sources=. -Dsonar.php.tests.reportPath=tests'
+                        withSonarQubeEnv('SonarQubeServer') {
+                            bat 'sonar-scanner -Dsonar.projectKey=testprojet -Dsonar.sources=. -Dsonar.php.tests.reportPath=tests'
+                        }
                     } catch (Exception e) {
                         echo "Erreur lors de l'analyse SonarQube : ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
