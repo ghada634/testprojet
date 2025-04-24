@@ -4,11 +4,11 @@ pipeline {
     environment {
         RECIPIENTS = 'ghadaderouiche8@gmail.com'
         NESSUS_HOST = 'https://localhost:8834'  // ← Adresse de ton Nessus
-        NESSUS_USERNAME = 'admin'               // ← Identifiant Nessus
-        NESSUS_PASSWORD = 'admin'               // ← Mot de passe Nessus
-        SCAN_NAME = 'Scan-Ghada'
-        TARGET_IP = '127.0.0.1'                 // ← IP à scanner
-        POLICY_ID = '1'                         // ← ID de la politique Nessus
+        NESSUS_USERNAME = 'ghada'               // ← Identifiant Nessus
+        NESSUS_PASSWORD = 'Ghoughou*2001'               // ← Mot de passe Nessus
+        SCAN_NAME = 'pepline'
+        TARGET_IP = 'localhost:8082'                 // ← IP à scanner
+        POLICY_ID = '5'                         // ← ID de la politique Nessus
     }
 
     stages {
@@ -55,32 +55,47 @@ pipeline {
         }
 
         stage('Scan Nessus') {
-            steps {
-                script {
-                    echo "Authentification à Nessus"
-                    def token = bat(script: """
-                        curl -k -X POST "${NESSUS_HOST}/session" -H "Content-Type: application/json" -d ^
-                        "{\\"username\\": \\"${NESSUS_USERNAME}\\", \\"password\\": \\"${NESSUS_PASSWORD}\\"}" ^
-                        --silent | jq -r ".token"
-                    """, returnStdout: true).trim()
+    steps {
+        script {
+            echo "Authentification à Nessus"
 
-                    echo "Création du scan"
-                    def scanId = bat(script: """
-                        curl -k -X POST "${NESSUS_HOST}/scans" ^
-                        -H "X-Cookie: token=${token}" -H "Content-Type: application/json" ^
-                        -d "{\\"uuid\\": \\"${POLICY_ID}\\", \\"settings\\": {\\"name\\": \\"${SCAN_NAME}\\", \\"policy_id\\": ${POLICY_ID}, \\"text_targets\\": \\"${TARGET_IP}\\"}}" ^
-                        --silent | jq -r ".scan.id"
-                    """, returnStdout: true).trim()
+            def token = powershell(returnStdout: true, script: """
+                \$response = Invoke-RestMethod -Method Post -Uri '${NESSUS_HOST}/session' `
+                    -Headers @{ 'Content-Type' = 'application/json' } `
+                    -Body (@{username='${NESSUS_USERNAME}'; password='${NESSUS_PASSWORD}'} | ConvertTo-Json) `
+                    -SkipCertificateCheck
+                return \$response.token
+            """).trim()
+            echo "Token récupéré : ${token}"
 
-                    echo "Démarrage du scan Nessus"
-                    bat """
-                        curl -k -X POST "${NESSUS_HOST}/scans/${scanId}/launch" ^
-                        -H "X-Cookie: token=${token}"
-                    """
-                }
-            }
+            echo "Création du scan"
+            def scanId = powershell(returnStdout: true, script: """
+                \$body = @{
+                    uuid = '${POLICY_ID}'
+                    settings = @{
+                        name = '${SCAN_NAME}'
+                        policy_id = ${POLICY_ID}
+                        text_targets = '${TARGET_IP}'
+                    }
+                } | ConvertTo-Json -Depth 3
+
+                \$response = Invoke-RestMethod -Method Post -Uri '${NESSUS_HOST}/scans' `
+                    -Headers @{ 'X-Cookie' = 'token=${token}'; 'Content-Type' = 'application/json' } `
+                    -Body \$body -SkipCertificateCheck
+
+                return \$response.scan.id
+            """).trim()
+            echo "Scan ID récupéré : ${scanId}"
+
+            echo "Lancement du scan"
+            powershell(script: """
+                Invoke-RestMethod -Method Post -Uri '${NESSUS_HOST}/scans/${scanId}/launch' `
+                    -Headers @{ 'X-Cookie' = 'token=${token}' } -SkipCertificateCheck
+            """)
         }
     }
+}
+
 
     post {
         success {
