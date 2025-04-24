@@ -3,12 +3,12 @@ pipeline {
 
     environment {
         RECIPIENTS = 'ghadaderouiche8@gmail.com'
-        NESSUS_HOST = 'https://localhost:8834'  // ← Adresse de ton Nessus
-        NESSUS_USERNAME = 'ghada'               // ← Identifiant Nessus
-        NESSUS_PASSWORD = 'Ghoughou*2001'               // ← Mot de passe Nessus
+        NESSUS_HOST = 'https://localhost:8834'
+        NESSUS_USERNAME = 'ghada'
+        NESSUS_PASSWORD = 'Ghoughou*2001'
         SCAN_NAME = 'pepline'
-        TARGET_IP = 'localhost:8082'                 // ← IP à scanner
-        POLICY_ID = '5'                         // ← ID de la politique Nessus
+        TARGET_IP = 'localhost:8082'
+        POLICY_ID = '5'
     }
 
     stages {
@@ -55,47 +55,47 @@ pipeline {
         }
 
         stage('Scan Nessus') {
-    steps {
-        script {
-            echo "Authentification à Nessus"
+            steps {
+                script {
+                    echo "Authentification à Nessus"
 
-            def token = powershell(returnStdout: true, script: """
-                \$response = Invoke-RestMethod -Method Post -Uri '${NESSUS_HOST}/session' `
-                    -Headers @{ 'Content-Type' = 'application/json' } `
-                    -Body (@{username='${NESSUS_USERNAME}'; password='${NESSUS_PASSWORD}'} | ConvertTo-Json) `
-                    -SkipCertificateCheck
-                return \$response.token
-            """).trim()
-            echo "Token récupéré : ${token}"
+                    def token = powershell(returnStdout: true, script: """
+                        \$response = Invoke-RestMethod -Method Post -Uri '${NESSUS_HOST}/session' `
+                            -Headers @{ 'Content-Type' = 'application/json' } `
+                            -Body (@{username='${NESSUS_USERNAME}'; password='${NESSUS_PASSWORD}'} | ConvertTo-Json) `
+                            -SkipCertificateCheck
+                        return \$response.token
+                    """).trim()
+                    echo "Token récupéré : ${token}"
 
-            echo "Création du scan"
-            def scanId = powershell(returnStdout: true, script: """
-                \$body = @{
-                    uuid = '${POLICY_ID}'
-                    settings = @{
-                        name = '${SCAN_NAME}'
-                        policy_id = ${POLICY_ID}
-                        text_targets = '${TARGET_IP}'
-                    }
-                } | ConvertTo-Json -Depth 3
+                    echo "Création du scan"
+                    def scanId = powershell(returnStdout: true, script: """
+                        \$body = @{
+                            uuid = '${POLICY_ID}'
+                            settings = @{
+                                name = '${SCAN_NAME}'
+                                policy_id = ${POLICY_ID}
+                                text_targets = '${TARGET_IP}'
+                            }
+                        } | ConvertTo-Json -Depth 3
 
-                \$response = Invoke-RestMethod -Method Post -Uri '${NESSUS_HOST}/scans' `
-                    -Headers @{ 'X-Cookie' = 'token=${token}'; 'Content-Type' = 'application/json' } `
-                    -Body \$body -SkipCertificateCheck
+                        \$response = Invoke-RestMethod -Method Post -Uri '${NESSUS_HOST}/scans' `
+                            -Headers @{ 'X-Cookie' = 'token=${token}'; 'Content-Type' = 'application/json' } `
+                            -Body \$body -SkipCertificateCheck
 
-                return \$response.scan.id
-            """).trim()
-            echo "Scan ID récupéré : ${scanId}"
+                        return \$response.scan.id
+                    """).trim()
+                    echo "Scan ID récupéré : ${scanId}"
 
-            echo "Lancement du scan"
-            powershell(script: """
-                Invoke-RestMethod -Method Post -Uri '${NESSUS_HOST}/scans/${scanId}/launch' `
-                    -Headers @{ 'X-Cookie' = 'token=${token}' } -SkipCertificateCheck
-            """)
+                    echo "Lancement du scan"
+                    powershell(script: """
+                        Invoke-RestMethod -Method Post -Uri '${NESSUS_HOST}/scans/${scanId}/launch' `
+                            -Headers @{ 'X-Cookie' = 'token=${token}' } -SkipCertificateCheck
+                    """)
+                }
+            }
         }
     }
-}
-
 
     post {
         success {
