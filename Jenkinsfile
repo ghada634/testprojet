@@ -15,7 +15,13 @@ pipeline {
         stage('Exécuter les tests') {
             steps {
                 script {
-                    bat '.\\vendor\\bin\\phpunit tests'
+                    try {
+                        bat '.\\vendor\\bin\\phpunit tests'
+                    } catch (Exception e) {
+                        echo "Erreur lors de l'exécution des tests : ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
                 }
             }
         }
@@ -23,7 +29,13 @@ pipeline {
         stage('Analyse SonarQube') {
             steps {
                 withSonarQubeEnv('SonarQubeServer') {
-                    bat 'sonar-scanner -Dsonar.projectKey=testprojet -Dsonar.sources=. -Dsonar.php.tests.reportPath=tests'
+                    try {
+                        bat 'sonar-scanner -Dsonar.projectKey=testprojet -Dsonar.sources=. -Dsonar.php.tests.reportPath=tests'
+                    } catch (Exception e) {
+                        echo "Erreur lors de l'analyse SonarQube : ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
                 }
             }
         }
@@ -31,7 +43,13 @@ pipeline {
         stage('Construire l\'image Docker') {
             steps {
                 script {
-                    bat 'docker build -t edoc-app .'
+                    try {
+                        bat 'docker build -t edoc-app .'
+                    } catch (Exception e) {
+                        echo "Erreur lors de la construction de l'image Docker : ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
                 }
             }
         }
@@ -39,8 +57,13 @@ pipeline {
         stage('Scan Trivy pour vulnérabilités Docker') {
             steps {
                 script {
-                    // Scanne l'image Docker pour les vulnérabilités
-                    bat 'trivy image edoc-app'
+                    try {
+                        bat 'trivy image edoc-app'
+                    } catch (Exception e) {
+                        echo "Erreur lors du scan Trivy : ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
                 }
             }
         }
@@ -48,9 +71,15 @@ pipeline {
         stage('Déploiement') {
             steps {
                 script {
-                    bat 'docker stop edoc-container || echo "Pas de conteneur à arrêter"'
-                    bat 'docker rm edoc-container || echo "Pas de conteneur à supprimer"'
-                    bat 'docker run -d -p 8082:80 --name edoc-container edoc-app'
+                    try {
+                        bat 'docker stop edoc-container || echo "Pas de conteneur à arrêter"'
+                        bat 'docker rm edoc-container || echo "Pas de conteneur à supprimer"'
+                        bat 'docker run -d -p 8082:80 --name edoc-container edoc-app'
+                    } catch (Exception e) {
+                        echo "Erreur lors du déploiement du conteneur Docker : ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
                 }
             }
         }
@@ -60,7 +89,7 @@ pipeline {
         success {
             mail to: "${RECIPIENTS}",
                  subject: "✅ SUCCESS - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Bonjour Ghada Le build a réussi. Consulte les détails ici : ${env.BUILD_URL}",
+                 body: "Bonjour Ghada,\n\nLe build a réussi. Consulte les détails ici : ${env.BUILD_URL}",
                  mimeType: 'text/plain',
                  charset: 'UTF-8'
         }
@@ -68,7 +97,7 @@ pipeline {
         failure {
             mail to: "${RECIPIENTS}",
                  subject: "❌ ECHEC - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Bonjour Ghada 👩‍💻,\n\nLe build a ÉCHOUÉ 💥 !\n\nVérifie les logs ici : ${env.BUILD_URL}",
+                 body: "Bonjour Ghada 👩‍💻,\n\nLe build a échoué 💥 !\n\nVérifie les logs ici : ${env.BUILD_URL}",
                  mimeType: 'text/plain',
                  charset: 'UTF-8'
         }
