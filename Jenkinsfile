@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Cloner le code') {
             steps {
-                git 'https://github.com/ghada634/testprojet.git'
+                git url: 'https://github.com/ghada634/testprojet.git'
             }
         }
 
@@ -42,7 +42,7 @@ pipeline {
                     try {
                         bat 'docker build -t edoc-app .'
                     } catch (Exception e) {
-                        echo "Erreur lors de la construction de l'image Docker : ${e.getMessage()}"
+                        echo "Erreur lors de la construction de l\'image Docker : ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
                         throw e
                     }
@@ -68,9 +68,9 @@ pipeline {
             steps {
                 script {
                     try {
-                        bat "docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%"
-                        bat "docker tag edoc-app %DOCKER_USERNAME%/edoc-app:latest"
-                        bat "docker push %DOCKER_USERNAME%/edoc-app:latest"
+                        bat "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                        bat "docker tag edoc-app ${DOCKER_USERNAME}/edoc-app:latest"
+                        bat "docker push ${DOCKER_USERNAME}/edoc-app:latest"
                     } catch (Exception e) {
                         echo "Erreur lors du push de l'image Docker : ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
@@ -83,13 +83,13 @@ pipeline {
         stage('Déployer sur AWS EC2') {
             steps {
                 script {
-                    withCredentials([file(credentialsId: 'ghada-key', variable: 'SSH_KEY')]) {
-                        bat '''
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ghada-key', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
+                        bat """
                             set PATH=C:\\Windows\\System32\\OpenSSH\\;%PATH%
                             icacls %SSH_KEY% /inheritance:r
                             icacls %SSH_KEY% /grant:r "%USERNAME%:R"
-                            ssh -i %SSH_KEY% -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -o UserKnownHostsFile=/dev/null ubuntu@54.211.241.114 "docker pull ghada522/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 80:80 ghada522/edoc-app:latest"
-                        '''
+                            ssh -i %SSH_KEY% -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -o UserKnownHostsFile=/dev/null %SSH_USER%@54.211.241.114 "docker pull ${DOCKER_USERNAME}/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 80:80 ${DOCKER_USERNAME}/edoc-app:latest"
+                        """
                     }
                 }
             }
@@ -98,19 +98,23 @@ pipeline {
 
     post {
         success {
-            mail to: "${RECIPIENTS}",
-                 subject: "✅ SUCCESS - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Bonjour Ghada,\n\nLe build a réussi. Consulte les détails ici : ${env.BUILD_URL}",
-                 mimeType: 'text/plain',
-                 charset: 'UTF-8'
+            mail(
+                to: RECIPIENTS,
+                subject: "✅ SUCCESS - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "Bonjour Ghada,\n\nLe build a réussi. Consulte les détails ici : ${env.BUILD_URL}",
+                mimeType: 'text/plain',
+                charset: 'UTF-8'
+            )
         }
 
         failure {
-            mail to: "${RECIPIENTS}",
-                 subject: "❌ ECHEC - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "Bonjour Ghada 👩‍💻,\n\nLe build a échoué 💥 !\n\nVérifie les logs ici : ${env.BUILD_URL}",
-                 mimeType: 'text/plain',
-                 charset: 'UTF-8'
+            mail(
+                to: RECIPIENTS,
+                subject: "❌ ECHEC - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "Bonjour Ghada 👩‍💻,\n\nLe build a échoué 💥 !\n\nVérifie les logs ici : ${env.BUILD_URL}",
+                mimeType: 'text/plain',
+                charset: 'UTF-8'
+            )
         }
     }
 }
