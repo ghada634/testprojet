@@ -85,7 +85,7 @@ pipeline {
                 script {
                     withCredentials([sshUserPrivateKey(credentialsId: 'ghada-key', keyFileVariable: 'SSH_KEY')]) {
                         bat '''
-                            set PATH=C:\Windows\System32\OpenSSH\;%PATH%
+                            set PATH=C:\\Windows\\System32\\OpenSSH\\;%PATH%
                             ssh -i %SSH_KEY% -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR ubuntu@54.211.241.114 "docker pull ghada522/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 80:80 ghada522/edoc-app:latest"
                         '''
                     }
