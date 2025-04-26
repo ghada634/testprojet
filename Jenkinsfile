@@ -30,7 +30,7 @@ pipeline {
                             bat 'sonar-scanner -Dsonar.projectKey=testprojet -Dsonar.sources=. -Dsonar.php.tests.reportPath=tests'
                         }
                     } catch (Exception e) {
-                        echo "Erreur lors de l\'analyse SonarQube : ${e.getMessage()}"
+                        echo "Erreur lors de l'analyse SonarQube : ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
                         throw e
                     }
@@ -44,7 +44,7 @@ pipeline {
                     try {
                         bat 'docker build -t edoc-app .'
                     } catch (Exception e) {
-                        echo "Erreur lors de la construction de l\'image Docker : ${e.getMessage()}"
+                        echo "Erreur lors de la construction de l'image Docker : ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
                         throw e
                     }
@@ -74,7 +74,7 @@ pipeline {
                         bat "docker tag edoc-app %DOCKER_USERNAME%/edoc-app:latest"
                         bat "docker push %DOCKER_USERNAME%/edoc-app:latest"
                     } catch (Exception e) {
-                        echo "Erreur lors du push de l\'image Docker : ${e.getMessage()}"
+                        echo "Erreur lors du push de l'image Docker : ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
                         throw e
                     }
@@ -83,22 +83,28 @@ pipeline {
         }
 
         // 🚀 Déploiement AWS doit être à l'intérieur de "stages"
-     stage('Déploiement sur AWS EC2') {
-    steps {
-        script {
-            sshagent(credentials: ['ghada-key']) {
-                bat """
-                    ssh -o StrictHostKeyChecking=no ubuntu@54.211.241.114 ^
-                    "docker stop edoc-container  echo No container to stop && ^
-                    docker rm edoc-container  echo No container to remove && ^
-                    cd /home/ubuntu/your-project-folder && ^
-                    docker build -t edoc-app . && ^
-                    docker run -d -p 8080:80 --name edoc-container edoc-app"
-                """
+        stage('Déploiement sur AWS EC2') {
+            steps {
+                script {
+                    sshagent(credentials: ['ghada-key']) {
+                        sh '''
+                            echo "Connecting to EC2 instance..."
+                            ssh -o StrictHostKeyChecking=no ubuntu@54.211.241.114 << 'EOF'
+                            echo "Stopping old container if any..."
+                            docker stop edoc-container || echo "No container to stop"
+                            docker rm edoc-container || echo "No container to remove"
+                            
+                            echo "Building and running the new container..."
+                            cd /home/ubuntu/your-project-folder || exit
+                            docker build -t edoc-app .
+                            docker run -d -p 8080:80 --name edoc-container edoc-app
+                            EOF
+                        '''
+                    }
+                }
             }
         }
     }
-}
 
     post {
         success {
