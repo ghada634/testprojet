@@ -83,10 +83,12 @@ pipeline {
         stage('Déployer sur AWS EC2') {
             steps {
                 script {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'ghada-key', keyFileVariable: 'SSH_KEY')]) {
+                    withCredentials([file(credentialsId: 'ghada-key', variable: 'SSH_KEY')]) {
                         bat '''
                             set PATH=C:\\Windows\\System32\\OpenSSH\\;%PATH%
-                            ssh -i %SSH_KEY% -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR ubuntu@54.211.241.114 "docker pull ghada522/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 80:80 ghada522/edoc-app:latest"
+                            icacls %SSH_KEY% /inheritance:r
+                            icacls %SSH_KEY% /grant:r "%USERNAME%:R"
+                            ssh -i %SSH_KEY% -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -o UserKnownHostsFile=/dev/null ubuntu@54.211.241.114 "docker pull ghada522/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 80:80 ghada522/edoc-app:latest"
                         '''
                     }
                 }
