@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         RECIPIENTS = 'ghadaderouiche8@gmail.com'
+        DOCKER_USERNAME = 'ghada522'
+        DOCKER_PASSWORD = 'Ghoughou*2001'
     }
 
     stages {
@@ -28,7 +30,7 @@ pipeline {
                             bat 'sonar-scanner -Dsonar.projectKey=testprojet -Dsonar.sources=. -Dsonar.php.tests.reportPath=tests'
                         }
                     } catch (Exception e) {
-                        echo "Erreur lors de l'analyse SonarQube : ${e.getMessage()}"
+                        echo "Erreur lors de l\'analyse SonarQube : ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
                         throw e
                     }
@@ -42,7 +44,7 @@ pipeline {
                     try {
                         bat 'docker build -t edoc-app .'
                     } catch (Exception e) {
-                        echo "Erreur lors de la construction de l'image Docker : ${e.getMessage()}"
+                        echo "Erreur lors de la construction de l\'image Docker : ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
                         throw e
                     }
@@ -64,15 +66,15 @@ pipeline {
             }
         }
 
-        stage('Déploiement') {
+        stage('Pusher l\'image Docker vers Docker Hub') {
             steps {
                 script {
                     try {
-                        bat 'docker stop edoc-container || echo "Pas de conteneur à arrêter"'
-                        bat 'docker rm edoc-container || echo "Pas de conteneur à supprimer"'
-                        bat 'docker run -d -p 8082:80 --name edoc-container edoc-app'
+                        bat "docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%"
+                        bat "docker tag edoc-app %DOCKER_USERNAME%/edoc-app:latest"
+                        bat "docker push %DOCKER_USERNAME%/edoc-app:latest"
                     } catch (Exception e) {
-                        echo "Erreur lors du déploiement du conteneur Docker : ${e.getMessage()}"
+                        echo "Erreur lors du push de l\'image Docker : ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
                         throw e
                     }
