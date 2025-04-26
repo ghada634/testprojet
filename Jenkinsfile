@@ -16,9 +16,7 @@ pipeline {
 
         stage('Exécuter les tests') {
             steps {
-                script {
-                    bat '.\\vendor\\bin\\phpunit tests'
-                }
+                bat '.\\vendor\\bin\\phpunit tests'
             }
         }
 
@@ -82,23 +80,13 @@ pipeline {
             }
         }
 
-        // 🚀 Déploiement AWS doit être à l'intérieur de "stages"
-        stage('Déploiement sur AWS EC2') {
+        stage('Déployer sur AWS EC2') {
             steps {
                 script {
-                    sshagent(credentials: ['ghada-key']) {
-                        sh '''
-                            echo "Connecting to EC2 instance..."
-                            ssh -o StrictHostKeyChecking=no ubuntu@54.211.241.114 << 'EOF'
-                            echo "Stopping old container if any..."
-                            docker stop edoc-container || echo "No container to stop"
-                            docker rm edoc-container || echo "No container to remove"
-                            
-                            echo "Building and running the new container..."
-                            cd /home/ubuntu/your-project-folder || exit
-                            docker build -t edoc-app .
-                            docker run -d -p 8080:80 --name edoc-container edoc-app
-                            EOF
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ghada-key', keyFileVariable: 'SSH_KEY')]) {
+                        bat '''
+                            set PATH=C:\\Windows\\System32\\OpenSSH\\;%PATH%
+                            ssh -i %SSH_KEY% -o StrictHostKeyChecking=no ubuntu@54.211.241.114 "docker pull ghada522/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 80:80 ghada522/edoc-app:latest"
                         '''
                     }
                 }
