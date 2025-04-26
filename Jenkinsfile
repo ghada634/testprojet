@@ -88,7 +88,7 @@ pipeline {
                         bat """
                             set PATH=C:\\Windows\\System32\\OpenSSH\\;%PATH%
                             icacls "%SSH_KEY%" /reset
-                            icacls "%SSH_KEY%" /grant:r "Ghada":R
+                            icacls "%SSH_KEY%" /grant:r "test":R
                             icacls "%SSH_KEY%" /inheritance:r
                             type "%SSH_KEY%"
                         """
