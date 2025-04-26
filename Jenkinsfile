@@ -88,7 +88,7 @@ pipeline {
                             set PATH=C:\\Windows\\System32\\OpenSSH\\;%PATH%
                             icacls %SSH_KEY% /inheritance:r
                             icacls %SSH_KEY% /grant:r "%USERNAME%:R"
-                            ssh -i %SSH_KEY% -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -o UserKnownHostsFile=/dev/null %SSH_USER%@54.211.241.114 "docker pull ${DOCKER_USERNAME}/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 80:80 ${DOCKER_USERNAME}/edoc-app:latest"
+                            ssh -i %SSH_KEY% -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -o UserKnownHostsFile=/dev/null %SSH_USER%@100.26.100.148 "docker pull ${DOCKER_USERNAME}/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 80:80 ${DOCKER_USERNAME}/edoc-app:latest"
                         """
                     }
                 }
