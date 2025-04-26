@@ -82,6 +82,26 @@ pipeline {
             }
         }
     }
+    stage('Déploiement sur AWS') {
+    steps {
+        script {
+            withCredentials([file(credentialsId: 'ghada-key', variable: 'KEY')]) {
+                sh '''
+                    echo "Setting up SSH connection..."
+                    chmod 600 $KEY
+                    ssh -o StrictHostKeyChecking=no -i $KEY ubuntu@54.211.241.114 << 'EOF'
+                      echo "Connected to EC2 server."
+                      sudo docker pull ghada634/testprojet:latest
+                      sudo docker stop edoc-container || true
+                      sudo docker rm edoc-container || true
+                      sudo docker run -d -p 8080:80 --name edoc-container ghada634/testprojet:latest
+                    EOF
+                '''
+            }
+        }
+    }
+}
+
 
     post {
         success {
