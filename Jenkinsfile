@@ -83,7 +83,7 @@ pipeline {
         stage('Déployer sur AWS EC2') {
             steps {
                 script {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'ghada-key', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ghada-key2', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                         bat """
                             set PATH=C:\\Windows\\System32\\OpenSSH\\;%PATH%
                             icacls %SSH_KEY% /inheritance:r
