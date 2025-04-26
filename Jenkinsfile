@@ -83,12 +83,24 @@ pipeline {
         stage('Déployer sur AWS EC2') {
             steps {
                 script {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'ghada-key2', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ghada-key', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
+                        // Ensure SSH key has correct permissions
                         bat """
                             set PATH=C:\\Windows\\System32\\OpenSSH\\;%PATH%
-                            icacls %SSH_KEY% /inheritance:r
-                            icacls %SSH_KEY% /grant:r "Ghada:F"
-                            ssh -i %SSH_KEY% -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -o UserKnownHostsFile=/dev/null %SSH_USER%@100.26.100.148 "docker pull ${DOCKER_USERNAME}/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 80:80 ${DOCKER_USERNAME}/edoc-app:latest"
+                            icacls "%SSH_KEY%" /reset
+                            icacls "%SSH_KEY%" /grant:r "Ghada":R
+                            icacls "%SSH_KEY%" /inheritance:r
+                            type "%SSH_KEY%"
+                        """
+                        
+                        // SSH command with verbose output for debugging
+                        bat """
+                            ssh -vvv -i "%SSH_KEY%" -o StrictHostKeyChecking=no -o IdentitiesOnly=yes %SSH_USER%@100.26.100.148 "
+                                docker pull ${DOCKER_USERNAME}/edoc-app:latest || true
+                                docker stop app || true
+                                docker rm app || true
+                                docker run -d --name app -p 8080:8080 ${DOCKER_USERNAME}/edoc-app:latest
+                            "
                         """
                     }
                 }
