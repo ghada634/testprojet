@@ -23,14 +23,8 @@ pipeline {
         stage('Analyse SonarQube') {
             steps {
                 script {
-                    try {
-                        withSonarQubeEnv('SonarQubeServer') {
-                            bat 'sonar-scanner -Dsonar.projectKey=testprojet -Dsonar.sources=. -Dsonar.php.tests.reportPath=tests'
-                        }
-                    } catch (Exception e) {
-                        echo "Erreur lors de l'analyse SonarQube : ${e.getMessage()}"
-                        currentBuild.result = 'FAILURE'
-                        throw e
+                    withSonarQubeEnv('SonarQubeServer') {
+                        bat 'sonar-scanner -Dsonar.projectKey=testprojet -Dsonar.sources=. -Dsonar.php.tests.reportPath=tests'
                     }
                 }
             }
@@ -39,13 +33,7 @@ pipeline {
         stage('Construire l\'image Docker') {
             steps {
                 script {
-                    try {
-                        bat 'docker build -t edoc-app .'
-                    } catch (Exception e) {
-                        echo "Erreur lors de la construction de l\'image Docker : ${e.getMessage()}"
-                        currentBuild.result = 'FAILURE'
-                        throw e
-                    }
+                    bat 'docker build -t edoc-app .'
                 }
             }
         }
@@ -53,13 +41,7 @@ pipeline {
         stage('Scan Trivy pour vulnérabilités Docker') {
             steps {
                 script {
-                    try {
-                        bat 'trivy image edoc-app'
-                    } catch (Exception e) {
-                        echo "Erreur lors du scan Trivy : ${e.getMessage()}"
-                        currentBuild.result = 'FAILURE'
-                        throw e
-                    }
+                    bat 'trivy image edoc-app'
                 }
             }
         }
@@ -67,15 +49,9 @@ pipeline {
         stage('Pusher l\'image Docker vers Docker Hub') {
             steps {
                 script {
-                    try {
-                        bat "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-                        bat "docker tag edoc-app ${DOCKER_USERNAME}/edoc-app:latest"
-                        bat "docker push ${DOCKER_USERNAME}/edoc-app:latest"
-                    } catch (Exception e) {
-                        echo "Erreur lors du push de l'image Docker : ${e.getMessage()}"
-                        currentBuild.result = 'FAILURE'
-                        throw e
-                    }
+                    bat "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+                    bat "docker tag edoc-app ${DOCKER_USERNAME}/edoc-app:latest"
+                    bat "docker push ${DOCKER_USERNAME}/edoc-app:latest"
                 }
             }
         }
@@ -84,23 +60,11 @@ pipeline {
             steps {
                 script {
                     withCredentials([sshUserPrivateKey(credentialsId: 'ghada-key', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
-                        // Ensure SSH key has correct permissions
-                        bat """
-                            set PATH=C:\\Windows\\System32\\OpenSSH\\;%PATH%
-                            icacls "%SSH_KEY%" /reset
-                            icacls "%SSH_KEY%" /grant:r "test":R
-                            icacls "%SSH_KEY%" /inheritance:r
-                            type "%SSH_KEY%"
-                        """
-                        
-                        // SSH command with verbose output for debugging
-                        bat """
-                            ssh -vvv -i "%SSH_KEY%" -o StrictHostKeyChecking=no -o IdentitiesOnly=yes %SSH_USER%@100.26.100.148 "
-                                docker pull ${DOCKER_USERNAME}/edoc-app:latest || true
-                                docker stop app || true
-                                docker rm app || true
-                                docker run -d --name app -p 8080:8080 ${DOCKER_USERNAME}/edoc-app:latest
-                            "
+                        powershell """
+                            \$env:Path += ';C:\\\\Windows\\\\System32\\\\OpenSSH'
+                            chmod 600 \$env:SSH_KEY
+                            ssh -o StrictHostKeyChecking=no -i \$env:SSH_KEY \$env:SSH_USER@54.243.15.15 `
+                                "docker pull ${DOCKER_USERNAME}/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 8080:8080 ${DOCKER_USERNAME}/edoc-app:latest"
                         """
                     }
                 }
