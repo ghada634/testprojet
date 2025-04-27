@@ -89,12 +89,14 @@ pipeline {
                     // Write the private key to a temporary file
                     writeFile(file: 'id_rsa', text: privateKey)
 
-                    // Use SSH to deploy, passing the private key via the file
-                    bat """
-                        ssh -i id_rsa -o StrictHostKeyChecking=no ubuntu@54.243.15.15 "mkdir -p ~/mahran"
-                    """
+                    // Remove permissions for 'Users' group on the private key file
+                    bat 'icacls id_rsa /inheritance:r'
+                    bat 'icacls id_rsa /grant:r "Ghada:F"'
 
-                    // Delete the temporary private key file after use
+                    // Use SSH to deploy, passing the private key via the file
+                    bat 'ssh -i id_rsa -o StrictHostKeyChecking=no ubuntu@54.243.15.15 "mkdir -p ~/mahran"'
+
+                    // Clean up the private key file after use
                     bat 'del id_rsa'
                 }
             }
