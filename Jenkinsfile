@@ -91,7 +91,7 @@ pipeline {
 
                     // Remove permissions for 'Users' group on the private key file
                     bat 'icacls id_rsa /inheritance:r'
-                    bat 'icacls id_rsa /grant:r "Ghada:F"'
+                    bat 'icacls id_rsa /grant:r "test:F"'
 
                     // Use SSH to deploy, passing the private key via the file
                     bat 'ssh -i id_rsa -o StrictHostKeyChecking=no ubuntu@54.243.15.15 "mkdir -p ~/mahran"'
