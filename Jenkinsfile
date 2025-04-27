@@ -80,33 +80,22 @@ pipeline {
             }
         }
 
-        stage('Déployer sur AWS EC2') {
+        stage('Deploy AWS') {
             steps {
-                script {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'ghada-key', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
-                        // Ensure SSH key has correct permissions
-                        bat """
-                            set PATH=C:\\Windows\\System32\\OpenSSH\\;%PATH%
-                            icacls "%SSH_KEY%" /reset
-                            icacls "%SSH_KEY%" /grant:r "test":R
-                            icacls "%SSH_KEY%" /inheritance:r
-                            type "%SSH_KEY%"
-                        """
-                        
-                        // SSH command with verbose output for debugging
-                        bat """
-                            ssh -vvv -i "%SSH_KEY%" -o StrictHostKeyChecking=no -o IdentitiesOnly=yes %SSH_USER%@54.243.15.15 "
-                                docker pull ${DOCKER_USERNAME}/edoc-app:latest || true
-                                docker stop app || true
-                                docker rm app || true
-                                docker run -d --name app -p 8080:8080 ${DOCKER_USERNAME}/edoc-app:latest
-                            "
-                        """
-                    }
+                echo 'Starting AWS Deployment...'
+            }
+        }
+        stage('Connect and Create Folder') {
+            steps {
+                sshagent(['ghada-key']) {
+                    bat 'ssh -o StrictHostKeyChecking=no ubuntu@54.243.15.15 "mkdir -p ~/ghada"'
                 }
             }
         }
-    }
+
+
+
+
 
     post {
         success {
