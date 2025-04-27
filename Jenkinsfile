@@ -89,7 +89,7 @@ pipeline {
                         bat 'icacls %SSH_KEY_FILE% /grant:r "test:F"'
 
                         // Now SSH
-                        bat 'ssh -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no ubuntu@44.211.128.195 "docker pull yourdockerhubusername/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 8080:8080 yourdockerhubusername/edoc-app:latest"'
+                        bat 'ssh -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no ubuntu@44.211.128.195 "docker pull ghada522/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 8080:8080 ghada522/edoc-app:latest"'
                     }
                 }
             }
