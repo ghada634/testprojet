@@ -116,4 +116,10 @@ pipeline {
             mail(
                 to: RECIPIENTS,
                 subject: "❌ ECHEC - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: "Bonjour Ghada 👩‍💻,\
+                body: "Bonjour Ghada 👩‍💻,\n\nLe build a échoué 💥 !\n\nVérifie les logs ici : ${env.BUILD_URL}",
+                mimeType: 'text/plain',
+                charset: 'UTF-8'
+            )
+        }
+    }
+}
