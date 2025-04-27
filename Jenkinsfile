@@ -80,16 +80,15 @@ pipeline {
             }
         }
 
-        stage('Deploy AWS') {
+        stage('Deploy to AWS') {
             steps {
-                echo 'Starting AWS Deployment...'
-            }
-        }
-
-        stage('Connect and Create Folder') {
-            steps {
-                sshagent(['ghada-key']) {
-                    bat 'ssh -o StrictHostKeyChecking=no ubuntu@54.243.15.15 "mkdir -p ~/ghada"'
+                script {
+                    // Retrieve the private key from Jenkins credentials and use it directly in the SSH command
+                    def privateKey = credentials('ghada-key')  // Correct way to reference a Jenkins credential
+                    def sshCommand = """
+                        echo '${privateKey}' | ssh -o StrictHostKeyChecking=no -i /dev/stdin ubuntu@54.243.15.15 "mkdir -p ~/mahran"
+                    """
+                    bat sshCommand
                 }
             }
         }
