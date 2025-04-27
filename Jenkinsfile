@@ -42,7 +42,7 @@ pipeline {
                     try {
                         bat 'docker build -t edoc-app .'
                     } catch (Exception e) {
-                        echo "Erreur lors de la construction de l\'image Docker : ${e.getMessage()}"
+                        echo "Erreur lors de la construction de l'image Docker : ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
                         throw e
                     }
@@ -82,22 +82,15 @@ pipeline {
 
         stage('Deploy to AWS') {
             steps {
-                script {
-                    // Get the private key stored in Jenkins credentials
-                    def privateKey = '''${ghada-key}'''  // Use your Jenkins credential ID here
+                withCredentials([sshUserPrivateKey(credentialsId: 'ghada-key', keyFileVariable: 'SSH_KEY_FILE')]) {
+                    script {
+                        // Fix file permissions
+                        bat 'icacls %SSH_KEY_FILE% /inheritance:r'
+                        bat 'icacls %SSH_KEY_FILE% /grant:r "test:F"'
 
-                    // Write the private key to a temporary file
-                    writeFile(file: 'id_rsa', text: privateKey)
-
-                    // Remove permissions for 'Users' group on the private key file
-                    bat 'icacls id_rsa /inheritance:r'
-                    bat 'icacls id_rsa /grant:r "test:F"'
-
-                    // Use SSH to deploy, passing the private key via the file
-                    bat 'ssh -i id_rsa -o StrictHostKeyChecking=no ubuntu@54.243.15.15 "mkdir -p ~/mahran"'
-
-                    // Clean up the private key file after use
-                    bat 'del id_rsa'
+                        // Now SSH
+                        bat 'ssh -i %SSH_KEY_FILE% -o StrictHostKeyChecking=no ubuntu@44.211.128.195 "mkdir -p ~/ghada2"'
+                    }
                 }
             }
         }
