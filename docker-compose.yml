@@ -7,7 +7,6 @@ services:
       - db
     networks:
       - edoc-net
-    command: vendor/bin/phpunit tests
 
   db:
     image: mysql:5.7
