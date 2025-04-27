@@ -61,7 +61,7 @@ pipeline {
 
                             # Modifier les permissions pour que seul Jenkins puisse lire la clé
                             icacls "\$env:SSH_KEY" /inheritance:r
-                            icacls "\$env:SSH_KEY" /grant:r "%USERNAME%:R"
+                            icacls "\$env:SSH_KEY" /grant:r "Ghada:R"
 
                             ssh -o StrictHostKeyChecking=no -i \$env:SSH_KEY \$env:SSH_USER@54.243.15.15 `
                                 "docker pull ${DOCKER_USERNAME}/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 8080:8080 ${DOCKER_USERNAME}/edoc-app:latest"
