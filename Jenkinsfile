@@ -83,12 +83,19 @@ pipeline {
         stage('Deploy to AWS') {
             steps {
                 script {
-                    // Retrieve the private key from Jenkins credentials and use it directly in the SSH command
-                    def privateKey = credentials('ghada-key')  // Correct way to reference a Jenkins credential
-                    def sshCommand = """
-                        echo '${privateKey}' | ssh -o StrictHostKeyChecking=no -i /dev/stdin ubuntu@54.243.15.15 "mkdir -p ~/mahran"
+                    // Get the private key stored in Jenkins credentials
+                    def privateKey = credentials('ghada-key')  // Corrected to access Jenkins credentials
+
+                    // Write the private key to a temporary file
+                    writeFile(file: 'id_rsa', text: privateKey)
+
+                    // Use SSH to deploy, passing the private key via the file
+                    bat """
+                        ssh -i id_rsa -o StrictHostKeyChecking=no ubuntu@54.243.15.15 "mkdir -p ~/mahran"
                     """
-                    bat sshCommand
+
+                    // Delete the temporary private key file after use
+                    bat 'del id_rsa'
                 }
             }
         }
