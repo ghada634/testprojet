@@ -32,17 +32,13 @@ pipeline {
 
         stage('Construire l\'image Docker') {
             steps {
-                script {
-                    bat 'docker build -t edoc-app .'
-                }
+                bat 'docker build -t edoc-app .'
             }
         }
 
         stage('Scan Trivy pour vulnérabilités Docker') {
             steps {
-                script {
-                    bat 'trivy image edoc-app'
-                }
+                bat 'trivy image edoc-app'
             }
         }
 
@@ -62,7 +58,11 @@ pipeline {
                     withCredentials([sshUserPrivateKey(credentialsId: 'ghada-key', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                         powershell """
                             \$env:Path += ';C:\\\\Windows\\\\System32\\\\OpenSSH'
-                            
+
+                            # Modifier les permissions pour que seul Jenkins puisse lire la clé
+                            icacls "\$env:SSH_KEY" /inheritance:r
+                            icacls "\$env:SSH_KEY" /grant:r "%USERNAME%:R"
+
                             ssh -o StrictHostKeyChecking=no -i \$env:SSH_KEY \$env:SSH_USER@54.243.15.15 `
                                 "docker pull ${DOCKER_USERNAME}/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 8080:8080 ${DOCKER_USERNAME}/edoc-app:latest"
                         """
@@ -75,17 +75,16 @@ pipeline {
     post {
         success {
             mail(
-                to: RECIPIENTS,
+                to: "${RECIPIENTS}",
                 subject: "✅ SUCCESS - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: "Bonjour Ghada,\n\nLe build a réussi. Consulte les détails ici : ${env.BUILD_URL}",
                 mimeType: 'text/plain',
                 charset: 'UTF-8'
             )
         }
-
         failure {
             mail(
-                to: RECIPIENTS,
+                to: "${RECIPIENTS}",
                 subject: "❌ ECHEC - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: "Bonjour Ghada 👩‍💻,\n\nLe build a échoué 💥 !\n\nVérifie les logs ici : ${env.BUILD_URL}",
                 mimeType: 'text/plain',
