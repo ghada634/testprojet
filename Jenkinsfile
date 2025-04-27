@@ -36,13 +36,14 @@ pipeline {
             }
         }
 
-        stage('Construire l\'image Docker') {
+        stage('Construire et Lancer Docker Compose') {
             steps {
                 script {
                     try {
-                        bat 'docker build -t edoc-app .'
+                        // Ensure Docker Compose is available and the Docker Compose file is present
+                        bat 'docker-compose -f docker-compose.yml up -d --build'
                     } catch (Exception e) {
-                        echo "Erreur lors de la construction de l'image Docker : ${e.getMessage()}"
+                        echo "Erreur lors du lancement de Docker Compose : ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
                         throw e
                     }
