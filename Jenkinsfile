@@ -63,7 +63,7 @@ pipeline {
                         powershell """
                             \$env:Path += ';C:\\\\Windows\\\\System32\\\\OpenSSH'
                             
-                            ssh -o StrictHostKeyChecking=no -i \$env:SSH_KEY \$env:SSH_USER@ `
+                            ssh -o StrictHostKeyChecking=no -i \$env:SSH_KEY \$env:SSH_USER@54.243.15.15 `
                                 "docker pull ${DOCKER_USERNAME}/edoc-app:latest && docker stop app || true && docker rm app || true && docker run -d --name app -p 8080:8080 ${DOCKER_USERNAME}/edoc-app:latest"
                         """
                     }
