@@ -85,6 +85,7 @@ pipeline {
                 echo 'Starting AWS Deployment...'
             }
         }
+
         stage('Connect and Create Folder') {
             steps {
                 sshagent(['ghada-key']) {
@@ -92,10 +93,7 @@ pipeline {
                 }
             }
         }
-
-
-
-
+    }
 
     post {
         success {
