@@ -84,7 +84,7 @@ pipeline {
             steps {
                 script {
                     // Get the private key stored in Jenkins credentials
-                    def privateKey = credentials('ghada-key')  // Corrected to access Jenkins credentials
+                    def privateKey = '''${ghada-key}'''  // Use your Jenkins credential ID here
 
                     // Write the private key to a temporary file
                     writeFile(file: 'id_rsa', text: privateKey)
@@ -116,10 +116,4 @@ pipeline {
             mail(
                 to: RECIPIENTS,
                 subject: "❌ ECHEC - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: "Bonjour Ghada 👩‍💻,\n\nLe build a échoué 💥 !\n\nVérifie les logs ici : ${env.BUILD_URL}",
-                mimeType: 'text/plain',
-                charset: 'UTF-8'
-            )
-        }
-    }
-}
+                body: "Bonjour Ghada 👩‍💻,\
